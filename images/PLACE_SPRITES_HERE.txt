@@ -1,0 +1,9 @@
+이 폴더에 아래 두 파일을 저장해주세요:
+
+- gorilla_normal.png  : 고릴라 5단계 행복 스프라이트 시트 (가로로 5프레임 연속)
+- gorilla_sad.png     : 고릴라 5단계 슬픔 스프라이트 시트 (가로로 5프레임 연속)
+
+스프라이트 포맷:
+- 가로: 5프레임 연속 배치 (각 프레임 동일한 너비)
+- 세로: 1줄
+- CSS background-size:500% auto + background-position 으로 잘라서 사용

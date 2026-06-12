@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>주머니 — 저축 앱</title>
+  <meta name="description" content="픽셀 무드의 게이미피케이션 저축앱." />
+  <style>
+    @font-face {
+      font-family: 'DungGeunMo';
+      src: url('fonts/DungGeunMo.ttf?v=2') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+    }
+  </style>
+  <link rel="stylesheet" href="css/reset.css?v=4" />
+  <link rel="stylesheet" href="css/variables.css?v=4" />
+  <link rel="stylesheet" href="css/animations.css?v=3" />
+  <link rel="stylesheet" href="css/components.css?v=11" />
+  <link rel="stylesheet" href="css/screens.css?v=65" />
+  <link rel="stylesheet" href="css/modal.css?v=6" />
+</head>
+
+<body>
+
+  <!-- 스플래시 화면 -->
+  <div id="splash-screen" class="splash-screen">
+    <img class="splash-logo" src="images/main_Logo.png" alt="주머니"/>
+    <div class="splash-tap">TAP TO START</div>
+  </div>
+
+  <div id="app">
+    <!-- 스크린들이 JS로 동적 렌더링됩니다 -->
+    <div id="loading-screen" class="loading-screen" style="display:none">
+      <img class="loading-char" src="images/main_charecter.png" alt="캐릭터"/>
+      <div class="loading-text">로딩중...</div>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar-fill" id="loading-bar"></div>
+      </div>
+    </div>
+  </div>
+  <!-- 모달 컨테이너 -->
+  <div id="modal-overlay" class="modal-overlay hidden"></div>
+  <div id="modal-container" class="modal-container hidden"></div>
+  <!-- 토스트 컨테이너 -->
+  <div id="toast-container" class="toast-container"></div>
+  <!-- 파티클 컨테이너 -->
+  <div id="particle-container" class="particle-container"></div>
+
+  <script src="js/state.js?v=6"></script>
+  <script src="js/utils.js?v=2"></script>
+  <script src="js/characters.js?v=7"></script>
+  <script src="js/components.js?v=12"></script>
+  <script src="js/screens/onboarding.js?v=52"></script>
+  <script src="js/screens/home.js?v=17"></script>
+  <script src="js/screens/piggy.js?v=16"></script>
+  <script src="js/screens/mypage.js?v=12"></script>
+  <script src="js/screens/social.js?v=9"></script>
+  <script src="js/screens/today.js?v=12"></script>
+  <script src="js/screens/trainer_chat.js?v=13"></script>
+  <script src="js/screens/budget.js?v=3"></script>
+  <script src="js/screens/shop.js?v=1"></script>
+  <script src="js/screens/etf.js?v=1"></script>
+  <script src="js/modals.js?v=12"></script>
+  <script src="js/tutorial.js?v=2"></script>
+  <script src="js/app.js?v=7"></script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+/* ================================================
+   VARIABLES.CSS — 저금 Design System Tokens
+   ================================================ */
+
+
+:root {
+  /* ── Color Palette ── */
+  --bg:        #efe2bf;   /* 양피지 크림 — 화면 배경 */
+  --surface:   #fbf3d4;   /* 밝은 종이 — 카드, 입력창 */
+  --surface-2: #e7d4a3;   /* 살짝 어두운 종이 — 점선, 음영 */
+  --ink:       #3d2817;   /* 진한 호두 — 라인 / 본문 / 다크 CTA */
+  --text:      #3d2817;
+  --muted:     #8a6b3f;   /* 토프 — 보조 텍스트, 라벨 */
+  --accent:    #c2691f;   /* 도토리 갓 오렌지 브라운 — 1차 액센트 */
+  --accent-2:  #d4a05b;   /* 캐러멜 — 도토리 하이라이트 */
+  --green:     #6b8e3a;   /* 숲 그린 — 절약 / 안정 / 긍정 */
+  --red:       #b04632;   /* 베리 레드 — 경고 / 차감 */
+  --white:     #fbf3d4;   /* 액센트 위 글자 */
+
+  /* ── Legacy aliases (other screens 호환) ── */
+  --color-bg:            var(--bg);
+  --color-bg-card:       var(--surface);
+  --color-bg-card2:      var(--surface-2);
+  --color-bg-surface:    var(--surface-2);
+  --color-bg-elevated:   var(--surface);
+  --color-text-primary:  var(--text);
+  --color-text-secondary:var(--muted);
+  --color-text-muted:    var(--muted);
+  --color-primary:       var(--ink);
+  --color-secondary:     var(--accent);
+  --color-accent:        var(--accent);
+  --color-success:       var(--green);
+  --color-danger:        var(--red);
+  --color-warning:       var(--accent-2);
+  --color-info:          var(--muted);
+  --color-xp:            var(--accent);
+  --color-xp-bg:         var(--surface-2);
+  --color-gold:          var(--accent-2);
+  --color-gold-bg:       var(--surface-2);
+
+  /* ── Pixel Borders ── */
+  --px-border-thin: 2px solid #3d2817;
+  --px-border:      3px solid #3d2817;
+
+  /* ── Pixel Shadows (NO blur) ── */
+  --px-shadow-sm:  2px 2px 0 #3d2817;
+  --px-shadow:     4px 4px 0 #3d2817;
+
+  /* ── Legacy shadow aliases → pixel shadow ── */
+  --shadow-sm:              var(--px-shadow-sm);
+  --shadow-md:              var(--px-shadow);
+  --shadow-lg:              var(--px-shadow);
+  --shadow-glow-primary:    none;
+  --shadow-glow-secondary:  none;
+  --shadow-glow-xp:         none;
+  --shadow-glow-gold:       none;
+
+  /* ── Border Radius — always 0 ── */
+  --radius-sm:   0px;
+  --radius-md:   0px;
+  --radius-lg:   0px;
+  --radius-xl:   0px;
+  --radius-full: 0px;
+
+  /* ── Spacing ── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-7: 28px; --space-8: 32px;
+  --space-10: 40px; --space-12: 48px; --space-16: 64px;
+
+  /* ── Typography ── */
+  --font-pixel: 'DungGeunMo', monospace;
+  --font-num:   'DungGeunMo', monospace;
+
+  --font-sm:   0.75rem;   /* 12px — body-sm */
+  --font-base: 0.8125rem; /* 13px — body */
+  --font-md:   0.875rem;  /* 14px — body-lg */
+  --font-lg:   1rem;      /* 16px — button, h2 hint */
+  --font-xl:   1.125rem;
+  --font-2xl:  1.5rem;
+  --font-3xl:  2rem;      /* 32px — h1 */
+  --font-4xl:  3.5rem;    /* 56px — display */
+  --font-5xl:  4rem;      /* 64px — display xl */
+
+  --font-bold:      700;
+  --font-extrabold: 800;
+  --font-black:     900;
+
+  /* ── Z-index ── */
+  --z-base: 1; --z-nav: 100; --z-fab: 200;
+  --z-modal: 500; --z-toast: 600; --z-particle: 700;
+
+  /* ── Transition — minimal (pixel mood) ── */
+  --transition-fast:   0ms;
+  --transition-base:   0ms;
+  --transition-slow:   200ms linear;
+  --transition-bounce: 200ms linear;
+
+  /* ── Layout ── */
+  --nav-height:    100px;
+  --header-height: 64px;
+}

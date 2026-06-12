@@ -1,0 +1,16 @@
+# 개인 설정 / 임시
+.claude/
+.DS_Store
+Thumbs.db
+*.log
+
+# 민감정보 (API 키 등 — 커밋 금지)
+.env
+.env.*
+**/secrets*
+**/*api*key*
+
+# 빌드 산출물 (해당 시)
+node_modules/
+dist/
+build/

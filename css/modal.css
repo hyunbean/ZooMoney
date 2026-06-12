@@ -1,0 +1,361 @@
+/* =========================================
+   MODAL.CSS — 저금 (Pixel Design System)
+   ========================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(61, 40, 23, 0.6);
+  z-index: calc(var(--z-modal) - 1);
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-container {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(420px, 92vw);
+  background: var(--bg);
+  border: var(--px-border);
+  box-shadow: var(--px-shadow);
+  z-index: var(--z-modal);
+  padding: var(--space-6);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-container.hidden  { display: none; }
+.modal-container.visible { transform: translate(-50%, -50%); }
+
+.modal-container::-webkit-scrollbar       { width: 4px; }
+.modal-container::-webkit-scrollbar-track { background: var(--surface-2); }
+.modal-container::-webkit-scrollbar-thumb { background: var(--muted); }
+
+.modal-close-btn {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 32px;
+  height: 32px;
+  border: var(--px-border-thin);
+  box-shadow: var(--px-shadow-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DungGeunMo', monospace;
+}
+.modal-close-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+
+.modal-header {
+  text-align: center;
+  margin-bottom: var(--space-5);
+}
+.modal-title {
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  margin-bottom: var(--space-1);
+  color: var(--ink);
+  letter-spacing: 1px;
+}
+.modal-subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.modal-footer {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+.modal-footer .btn { flex: 1; }
+
+/* ── Daily close result backgrounds ── */
+.close-modal-bg-success { background: var(--bg); }
+.close-modal-bg-fail    { background: var(--bg); }
+
+/* ── Level up modal ── */
+.levelup-bg { background: var(--surface); border: var(--px-border); box-shadow: var(--px-shadow); }
+
+.levelup-char {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0 12px;
+}
+.levelup-char-img {
+  max-height: 200px;
+  width: auto;
+  object-fit: contain;
+  image-rendering: auto;
+  display: block;
+  margin: 0 auto;
+}
+.levelup-title {
+  font-size: var(--font-3xl);
+  font-weight: var(--font-black);
+  text-align: center;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+  letter-spacing: 2px;
+}
+.levelup-sub {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 8px 0 20px;
+  line-height: 1.8;
+}
+
+/* ── Badge unlock modal ── */
+.badge-unlock-display {
+  text-align: center;
+  padding: var(--space-6);
+}
+.badge-unlock-icon {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: var(--space-3);
+}
+.badge-unlock-name {
+  font-size: var(--font-lg);
+  font-weight: var(--font-black);
+  color: var(--accent-2);
+  margin-bottom: var(--space-1);
+  letter-spacing: 1px;
+}
+.badge-unlock-desc {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── Daily Settlement Modal ── */
+.settle-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.settle-emoji {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.settle-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.settle-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.settle-divider {
+  width: 100%;
+  border: none;
+  border-bottom: 2px dashed var(--surface-2);
+  margin: 8px 0;
+}
+.settle-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 2px dashed var(--surface-2);
+}
+.settle-row:last-of-type { border-bottom: none; }
+.settle-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+.settle-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.settle-xp {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 10px 0 16px;
+}
+.settle-xp.gain { color: var(--green); }
+.settle-xp.loss { color: var(--red); }
+.settle-ok-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--ink);
+  color: var(--white);
+  border: var(--px-border);
+  box-shadow: var(--px-shadow-sm);
+  font-family: 'DungGeunMo', monospace;
+  font-size: 14px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+.settle-ok-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+.settle-shield-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: #3a6a9a;
+  color: var(--white);
+  border: var(--px-border);
+  box-shadow: var(--px-shadow-sm);
+  font-family: 'DungGeunMo', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.settle-shield-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+.settle-shield-earn {
+  font-size: 12px;
+  font-weight: 700;
+  color: #3a6a9a;
+  letter-spacing: 0.5px;
+  margin: 6px 0 10px;
+  text-align: center;
+}
+
+/* ── 정산 AI 코멘트 ── */
+.settle-ai-wrap {
+  margin: 12px 0 8px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.settle-ai-loading {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+}
+.settle-ai-bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--surface-2);
+  border: var(--px-border-thin);
+  padding: 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.settle-ai-avatar {
+  width: 28px; height: 28px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: var(--px-border-thin);
+}
+.settle-ai-text {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+  flex: 1;
+}
+
+/* ── 확인 모달 ── */
+.confirm-modal {
+  padding: 8px 0 4px;
+  text-align: center;
+}
+.confirm-modal-msg {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.8;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+.confirm-modal-btns {
+  display: flex;
+  gap: 10px;
+}
+.confirm-modal-cancel,
+.confirm-modal-ok {
+  flex: 1;
+  padding: 12px;
+  border: var(--px-border);
+  box-shadow: var(--px-shadow);
+  font-family: 'DungGeunMo', monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.confirm-modal-cancel {
+  background: var(--surface);
+  color: var(--ink);
+}
+.confirm-modal-ok {
+  background: var(--red);
+  color: var(--white);
+}
+.confirm-modal-cancel:active,
+.confirm-modal-ok:active { transform: translate(2px, 2px); box-shadow: none; }
+
+/* ── 월간 리포트 버튼 (마이페이지 달성탭) ── */
+.myp-report-btn {
+  width: 100%;
+  padding: 13px;
+  margin-bottom: 14px;
+  border: var(--px-border);
+  box-shadow: var(--px-shadow);
+  background: var(--accent);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DungGeunMo', monospace;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.myp-report-btn:active { transform: translate(2px,2px); box-shadow: none; }
+
+/* ── 월간 리포트 모달 ── */
+.report-modal { padding: 4px 0 0; }
+.report-modal-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.report-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  gap: 10px;
+}
+.report-loading-txt {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  text-align: center;
+  line-height: 1.7;
+}
+.report-body {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.85;
+  letter-spacing: 0.3px;
+  background: var(--surface-2);
+  border: var(--px-border-thin);
+  padding: 14px;
+  margin-bottom: 16px;
+  min-height: 60px;
+}
