@@ -76,7 +76,9 @@ const AppState = (() => {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const saved = JSON.parse(raw);
-        state = Object.assign({}, DEFAULT_STATE, saved);
+        // 깊은 복사 — DEFAULT_STATE의 중첩 객체(goal 등)가 공유되어
+        // 오염되지 않도록 structuredClone 사용
+        state = Object.assign(structuredClone(DEFAULT_STATE), saved);
         return true;
       }
     } catch(e) {}
@@ -85,7 +87,7 @@ const AppState = (() => {
 
   /* ---------- Day rollover check ---------- */
   function checkDayRollover() {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = getTodayStr();
     if (state.todayDate && state.todayDate < today) {
       // Auto-settle previous day without showing modal (silent)
       _settleDaySilent();
@@ -178,14 +180,14 @@ const AppState = (() => {
     init() {
       const loaded = loadFromStorage();
       if (!loaded) {
-        state = Object.assign({}, DEFAULT_STATE);
+        state = structuredClone(DEFAULT_STATE);
         state.inviteCode = _generateCode();
         state.friends = _mockFriends();
         persist();
       }
       // 기존 저장 데이터에 startDate 없으면 오늘로 보정
       if (state.goal && state.goal.targetAmount > 0 && !state.goal.startDate) {
-        state.goal.startDate = new Date().toISOString().slice(0, 10);
+        state.goal.startDate = getTodayStr();
         persist();
       }
       checkDayRollover();
@@ -208,14 +210,14 @@ const AppState = (() => {
         monthlyExpenses: goalData.monthlyExpenses,
         timelineMonths: goalData.timelineMonths,
         monthlyTarget,
-        startDate: new Date().toISOString().slice(0, 10),
+        startDate: getTodayStr(),
         cardCategoryTotals: prevTotals,
         categoryBudgets: null,
       };
       state.monthlyBudget = goalData.monthlyExpenses;
       state.dailyBudget = dailyBudget;
       state.onboarded = true;
-      state.todayDate = new Date().toISOString().slice(0, 10);
+      state.todayDate = getTodayStr();
       persist();
       emit('ONBOARDING_COMPLETE', { dailyBudget });
     },
@@ -280,6 +282,15 @@ const AppState = (() => {
     },
 
     settleDay() {
+      // 오늘(실제 날짜) 정산을 이미 마쳤으면 중복 정산 차단
+      // (정산하면 todayDate가 다음 날로 넘어가므로, todayDate가
+      //  실제 오늘보다 미래라는 것 = 오늘치 정산 완료)
+      const realToday = getTodayStr();
+      if (state.todayDate && state.todayDate > realToday) {
+        emit('SETTLE_BLOCKED');
+        return false;
+      }
+
       const spendingDelta = state.dailyBudget - state.todaySpent;
       const dailySavings  = Math.ceil((state.goal?.monthlyTarget || 0) / 30);
       const delta         = dailySavings + spendingDelta;
@@ -318,7 +329,7 @@ const AppState = (() => {
       state.todaySpent = 0;
       const nextDate = new Date(settledDate || new Date());
       nextDate.setDate(nextDate.getDate() + 1);
-      state.todayDate = nextDate.toISOString().slice(0, 10);
+      state.todayDate = getTodayStr(nextDate);
 
       persist();
       emit('DAY_SETTLED', {
@@ -338,6 +349,7 @@ const AppState = (() => {
 
       // Check badges
       _checkBadges();
+      return true;
     },
 
     useShield(dateStr) {
@@ -418,11 +430,11 @@ const AppState = (() => {
       Object.assign(state.goal, changes);
       // 기간이 바뀌면 시작일 리셋 (새 타임라인으로 카운트다운 재시작)
       if (changes.timelineMonths !== undefined) {
-        state.goal.startDate = new Date().toISOString().slice(0, 10);
+        state.goal.startDate = getTodayStr();
       }
       // startDate 없으면 지금 설정
       if (!state.goal.startDate) {
-        state.goal.startDate = new Date().toISOString().slice(0, 10);
+        state.goal.startDate = getTodayStr();
       }
       // Recompute derived fields if financials changed
       if (changes.targetAmount !== undefined || changes.timelineMonths !== undefined ||
@@ -478,6 +490,10 @@ const AppState = (() => {
         char: _randomChar(),
       };
       state.friends.push(friend);
+      if (!state.badges.includes('social_1')) {
+        state.badges.push('social_1');
+        emit('BADGE_EARNED', { badgeId: 'social_1' });
+      }
       persist();
       emit('FRIEND_ADDED', { friend });
     },
@@ -520,7 +536,7 @@ const AppState = (() => {
       return Math.min(100, Math.max(0, ((ratio - segStart) / segSize) * 100));
     },
     getMonthExpenses() {
-      const m = new Date().toISOString().slice(0, 7);
+      const m = getTodayStr().slice(0, 7);
       return state.expenses.filter(e => e.date && e.date.startsWith(m));
     },
     getSocialRanking() {
@@ -567,6 +583,10 @@ const AppState = (() => {
     if (s.characterLevel >= 5) add('level_5');
     // Piggy saved 50k
     if (s.piggyBalance >= 50000) add('piggy_50k');
+    // 랭킹 1위
+    if (actions.getSocialRanking()[0]?.isMe) add('rank_1');
+    // 7일 연속 성공 (주간 목표)
+    if (_calcStreakLen(s.piggyHistory) >= 7) add('week_goal');
     persist();
   }
 

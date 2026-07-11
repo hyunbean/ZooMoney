@@ -4,9 +4,7 @@
    =========================================== */
 'use strict';
 
-/* ── Dify API 설정 ── */
-const DIFY_API_KEY          = 'app-BRTVIDQ3cjFcbvH0QzwJDag0'; // 목표 설정
-const DIFY_ANALYSIS_API_KEY = 'app-sOGucKKKdCShLpN4RI3Ty94w';  // 소비 분석
+/* ── Dify API 설정 (키는 js/config.js) ── */
 const DIFY_BASE_URL         = 'https://api.dify.ai/v1';
 
 async function callDifyAPI(message, conversationId, apiKey = DIFY_API_KEY) {
@@ -1116,15 +1114,17 @@ ${expList}`;
       return `<span style="display:inline-block;padding:2px 8px;background:${bg};color:var(--white);font-family:'DungGeunMo',monospace;font-size:13px;">${text}</span>`;
     }
 
-    /* AI 버블 텍스트 — Dify aiComment 우선, 없으면 기본 텍스트 */
+    /* AI 버블 텍스트 — Dify aiComment 우선, 없으면 기본 텍스트
+       goalName은 사용자 입력, goalAiComment는 Dify 응답이므로 둘 다 escape */
+    const safeGoalName = escapeHTML(goalName);
     const defaultAiTexts = {
-      other:    `${goalName}은(는) 보통 ${mkPill(formatKRWShort(base))} 정도예요. 할인이나 리퍼 제품을 이용하면 ${mkPill(formatKRWShort(recDisc), true)}까지 줄일 수 있어요.`,
-      travel:   `${goalName} 여행은 보통 ${mkPill(formatKRWShort(base))} 정도 필요해요. 얼리버드 항공권을 미리 예약하면 ${mkPill(formatKRWShort(recDisc), true)}도 가능해요.`,
-      vehicle:  `${goalName} 구입은 보통 ${mkPill(formatKRWShort(base))} 정도예요. 인증 중고차라면 ${mkPill(formatKRWShort(recDisc), true)}까지 가능해요.`,
-      housing:  `${goalName}은(는) 지역마다 달라요. 평균 ${mkPill(formatKRWShort(base))} 정도이고, 공공임대 활용 시 ${mkPill(formatKRWShort(recDisc), true)}도 가능해요.`,
-      shopping: `${goalName}은(는) 보통 ${mkPill(formatKRWShort(base))} 정도예요. 세일 기간이나 중고를 활용하면 ${mkPill(formatKRWShort(recDisc), true)}도 가능해요.`,
+      other:    `${safeGoalName}은(는) 보통 ${mkPill(formatKRWShort(base))} 정도예요. 할인이나 리퍼 제품을 이용하면 ${mkPill(formatKRWShort(recDisc), true)}까지 줄일 수 있어요.`,
+      travel:   `${safeGoalName} 여행은 보통 ${mkPill(formatKRWShort(base))} 정도 필요해요. 얼리버드 항공권을 미리 예약하면 ${mkPill(formatKRWShort(recDisc), true)}도 가능해요.`,
+      vehicle:  `${safeGoalName} 구입은 보통 ${mkPill(formatKRWShort(base))} 정도예요. 인증 중고차라면 ${mkPill(formatKRWShort(recDisc), true)}까지 가능해요.`,
+      housing:  `${safeGoalName}은(는) 지역마다 달라요. 평균 ${mkPill(formatKRWShort(base))} 정도이고, 공공임대 활용 시 ${mkPill(formatKRWShort(recDisc), true)}도 가능해요.`,
+      shopping: `${safeGoalName}은(는) 보통 ${mkPill(formatKRWShort(base))} 정도예요. 세일 기간이나 중고를 활용하면 ${mkPill(formatKRWShort(recDisc), true)}도 가능해요.`,
     };
-    const aiTexts = { [cat]: goalAiComment || defaultAiTexts[cat] || defaultAiTexts.other };
+    const aiTexts = { [cat]: escapeHTML(goalAiComment) || defaultAiTexts[cat] || defaultAiTexts.other };
 
     /* BCard 라벨 */
     const cardLabels = {
@@ -1699,7 +1699,7 @@ ${expList}`;
         placeholder="이름을 지어주세요."
         maxlength="10"
         autocomplete="off"
-        value="${petName}"/>
+        value="${escapeHTML(petName)}"/>
     `;
     screen.appendChild(nameWrap);
 

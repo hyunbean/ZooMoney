@@ -4,7 +4,7 @@
    =========================================== */
 'use strict';
 
-const DIFY_TRAINER_API_KEY = 'app-QDyYTj2EmA1sUM3J1qRroIVm';
+// DIFY_TRAINER_API_KEY는 js/config.js에서 로드됩니다.
 
 /* 목표 변경 플로우 상태 (renderTrainerChatScreen 재진입 시 리셋) */
 let _tchGoalChangeStep        = null;
@@ -203,9 +203,9 @@ function renderTrainerChatScreen() {
 
 /* ── 남은 일수 ── */
 function _tchDaysLeft(goal, todayStr) {
-  const start = new Date(goal.startDate || todayStr || new Date().toISOString().slice(0, 10));
+  const start = new Date(goal.startDate || todayStr || getTodayStr());
   start.setDate(start.getDate() + (goal.timelineMonths || 6) * 30);
-  const today = new Date(todayStr || new Date().toISOString().slice(0, 10));
+  const today = new Date(todayStr || getTodayStr());
   start.setHours(0,0,0,0); today.setHours(0,0,0,0);
   return Math.max(0, Math.ceil((start - today) / 86400000));
 }

@@ -4,61 +4,8 @@
    =========================================== */
 'use strict';
 
-/* ── Mock Posts ── */
-const MOCK_POSTS = [
-  { id:1, userId:'me', name:'나', level:3, charIdx:2,
-    badge:'절약왕', badgeType:'gold', time:'방금 전', filter:'all', hasImg:false,
-    content:'드디어 아이패드 Pro 살 수 있게 됐어요! 6개월 동안 배달 한 번도 안 했어요. 진짜 참길 잘했다 🐷', likes:47, comments:18, liked:false },
-  { id:2, userId:'u1', name:'도토리링', level:5, charIdx:4,
-    badge:'절약왕', badgeType:'gold', time:'1시간 전', filter:'tip', hasImg:true,
-    content:'점심 도시락 싸 다닌 지 한 달째! 한 달에 식비 10만원 이상 아꼈어요. 강추합니다 🥗', likes:94, comments:31, liked:false },
-  { id:3, userId:'u2', name:'짠돌이킹', level:2, charIdx:1,
-    badge:'절약중', badgeType:'green', time:'2시간 전', filter:'auth', hasImg:false,
-    content:'배달 21일째 참고 있어요! 완전 뿌듯하고 통장이 살아나는 느낌 🎉', likes:32, comments:9, liked:false },
-  { id:4, userId:'u3', name:'절약요정', level:4, charIdx:3,
-    badge:'인증완료', badgeType:'blue', time:'3시간 전', filter:'auth', hasImg:true,
-    content:'이번 달 카페 지출 0원 인증! 집에서 핸드드립 배워서 매일 마시고 있어요. 다들 화이팅 ☕', likes:56, comments:12, liked:false },
-  { id:5, userId:'u4', name:'첫차준비중', level:1, charIdx:0,
-    badge:'뉴비', badgeType:'brown', time:'4시간 전', filter:'tip', hasImg:false,
-    content:'편의점 대신 마트 이용하기 시작한 지 2주째예요. 같은 돈으로 훨씬 많이 살 수 있어요 🛒', likes:34, comments:11, liked:false },
-  { id:6, userId:'u5', name:'절약마스터', level:3, charIdx:2,
-    badge:'절약왕', badgeType:'gold', time:'5시간 전', filter:'challenge', hasImg:false,
-    content:'구독 서비스 정리하고 나만의 지출 정리법 잡았어요! 월 3만원 절약 중. 여러분도 해봐요 ❤', likes:47, comments:18, liked:false },
-];
-
-/* ── Mock Friends ── */
-const MOCK_FRIENDS = [
-  { name:'도토리링',   badge:'절약왕',   badgeType:'gold',  step:4, streak:21, goalPct:72, lastDate:'2026.05.19', lastAmt:8000  },
-  { name:'짠돌이킹',   badge:'절약중',   badgeType:'green', step:2, streak:8,  goalPct:38, lastDate:'2026.05.18', lastAmt:12000 },
-  { name:'미래부자',   badge:'인증완료', badgeType:'blue',  step:3, streak:14, goalPct:55, lastDate:'2026.05.17', lastAmt:5000  },
-  { name:'절약왕대장', badge:'절약왕',   badgeType:'gold',  step:5, streak:47, goalPct:91, lastDate:'2026.05.19', lastAmt:3000  },
-];
-
-/* ── Mock Groups ── */
-const MOCK_GROUPS = [
-  { id:1, icon:'🎯', name:'아이패드 살 사람들', level:5, category:'전자기기',
-    members:312, months:6, days:24, targetAmt:1500000, savedAmt:890000,
-    desc:'아이패드를 목표로 열심히 절약하는 모임! 함께하면 더 강해져요.', joined:true },
-  { id:2, icon:'💰', name:'1000만원 모우기', level:3, category:'저축',
-    members:156, months:12, days:189, targetAmt:10000000, savedAmt:3200000,
-    desc:'1000만원 모으기 장기 프로젝트! 꾸준히 함께해요.', joined:false },
-  { id:3, icon:'🚗', name:'차량 구매 준비', level:2, category:'교통',
-    members:89, months:24, days:15, targetAmt:20000000, savedAmt:5600000,
-    desc:'차 살 돈 같이 모아봐요. 매달 꼭 정산!', joined:false },
-  { id:4, icon:'🏠', name:'전세 독립 준비', level:4, category:'주거',
-    members:241, months:36, days:29, targetAmt:50000000, savedAmt:12000000,
-    desc:'독립하고 싶은 사람들 모여라! 같이 힘내봐요.', joined:false },
-];
-
-const GROUP_ICONS = ['🎯','💰','🏠','🚗','✈️','📱','🎮','👗','📚','🍕','💊','🎁'];
-
-const MOCK_CHATS = {
-  1: [
-    { name:'도토리링', charIdx:4, msg:'아이패드 목표 다들 화이팅! 저도 열심히 하겠습니다 🐷', time:'10:20', me:false },
-    { name:'절약요정', charIdx:3, msg:'이거 정말 어렵네요... 맛있는 거 참기가 젤 힘들어요 😅', time:'10:35', me:false },
-    { name:'짠돌이킹', charIdx:1, msg:'저도 같이 화이팅!!', time:'11:00', me:false },
-  ],
-};
+// MOCK_POSTS / MOCK_FRIENDS / MOCK_GROUPS / GROUP_ICONS / MOCK_CHATS / RANK_FRIEND_DATA
+// 는 js/data/mock.js에 정의되어 있습니다 (프로토타입용 정적 데이터).
 
 /* ══════════════════════════════════════════
    메인 커뮤니티 화면
@@ -238,15 +185,15 @@ function buildPostCard(post) {
   const card = el('div', { class: 'post-card' });
   card.innerHTML = `
     <div class="post-head">
-      <img class="post-avatar" src="${charSrc}" alt="${post.name}"/>
+      <img class="post-avatar" src="${charSrc}" alt="${escapeHTML(post.name)}"/>
       <div class="post-user">
-        <span class="post-name">${post.name}</span>
+        <span class="post-name">${escapeHTML(post.name)}</span>
         <span class="post-lv-badge">Lv.${post.level}</span>
         <span class="post-tag-badge" style="background:${badgeColor}">${post.badge}</span>
       </div>
       <span class="post-time">${post.time}</span>
     </div>
-    <div class="post-content">${post.content}</div>
+    <div class="post-content">${escapeHTML(post.content)}</div>
     ${post.hasImg ? `<div class="post-img-area"><span style="color:var(--muted);font-size:11px;letter-spacing:1px">이미지 첨부</span></div>` : ''}
     <div class="post-footer">
       <div class="post-stats">
@@ -316,7 +263,7 @@ function buildGroupCard(group) {
     <div class="group-card-icon">${group.icon}</div>
     <div class="group-card-info">
       <div class="group-card-top">
-        <span class="group-card-name">${group.name}</span>
+        <span class="group-card-name">${escapeHTML(group.name)}</span>
         <span class="group-card-lv">Lv.${group.level}</span>
         <span class="group-card-cat">${group.category}</span>
       </div>
@@ -352,14 +299,6 @@ function buildGroupCard(group) {
 /* ══════════════════════════════════════════
    친구 탭
    ══════════════════════════════════════════ */
-const RANK_FRIEND_DATA = [
-  { name:'짠돌이전설',   sub:'저축 마스터',  amount:72, rank:1, isMe:false },
-  { name:'절약요정',     sub:'절약 기사',    amount:58, rank:2, isMe:true  },
-  { name:'미래부자',     sub:'절약 기사',    amount:51, rank:3, isMe:false },
-  { name:'도토리킹',     sub:'저축 마스터',  amount:44, rank:4, isMe:false },
-  { name:'첫차준비중',   sub:'소비 견습생',  amount:38, rank:5, isMe:false },
-];
-
 const FRIEND_BADGE_COLORS = { gold:'#c2691f', green:'#6b8e3a', blue:'#4a7cbf', brown:'#d4a05b' };
 
 function renderFriendTab(container, s) {
@@ -410,7 +349,7 @@ function renderFriendTab(container, s) {
   function renderRank() {
     subContent.innerHTML = '';
 
-    const todayStr = (s && s.todayDate) || new Date().toISOString().slice(0,10);
+    const todayStr = (s && s.todayDate) || getTodayStr();
     const [yr, mo] = todayStr.split('-');
     const moKr = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'][parseInt(mo,10)-1];
 
@@ -514,7 +453,7 @@ function showWritePostScreen(s) {
       <div class="write-user-row">
         <img class="write-avatar" src="${getFrameImageSrc(state.characterType||0, calcCharStep(state), isCharSad(state))}" alt="나"/>
         <div>
-          <div class="write-user-name">${state.user?.name || '나'}</div>
+          <div class="write-user-name">${escapeHTML(state.user?.name) || '나'}</div>
           <div style="font-size:10px;color:var(--muted);letter-spacing:1px">LV.${calcCharStep(state)} ${CHARACTER_NAMES[calcCharStep(state)-1]}</div>
         </div>
       </div>
@@ -572,7 +511,7 @@ function showGroupDetailScreen(group) {
     <div class="gd-body">
       <div class="gd-hero">
         <div class="gd-icon">${group.icon}</div>
-        <div class="gd-name">${group.name}</div>
+        <div class="gd-name">${escapeHTML(group.name)}</div>
         <div class="gd-cat-tag">${group.category}</div>
       </div>
       <div class="gd-stats-row">
@@ -582,7 +521,7 @@ function showGroupDetailScreen(group) {
       </div>
       <div class="card gd-desc-card">
         <div style="font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:1px">그룹 소개</div>
-        <div style="font-size:13px;line-height:1.7;color:var(--ink)">${group.desc}</div>
+        <div style="font-size:13px;line-height:1.7;color:var(--ink)">${escapeHTML(group.desc)}</div>
       </div>
       <div class="card gd-progress-card">
         <div class="gd-progress-header">
@@ -619,7 +558,7 @@ function showGroupChatScreen(group) {
   sub.innerHTML = `
     <div class="sub-header">
       <button class="sub-close-btn" id="chat-close">✕</button>
-      <div class="sub-title" style="font-size:13px">${group.name}</div>
+      <div class="sub-title" style="font-size:13px">${escapeHTML(group.name)}</div>
       <div style="width:48px"></div>
     </div>
     <div class="chat-body" id="chat-body">
@@ -655,7 +594,7 @@ function showGroupChatScreen(group) {
     msgEl.className = 'chat-msg chat-msg-me';
     msgEl.innerHTML = `
       <div class="chat-bubble-wrap" style="align-items:flex-end">
-        <div class="chat-bubble chat-bubble-me">${msg}</div>
+        <div class="chat-bubble chat-bubble-me">${escapeHTML(msg)}</div>
       </div>
       <img class="chat-avatar" src="${getFrameImageSrc(s.characterType||0, calcCharStep(s), isCharSad(s))}" alt="나"/>
     `;
@@ -742,7 +681,7 @@ function showCreateGroupScreen() {
       desc: sub.querySelector('#cg-desc').value.trim() || name,
       joined: true,
     });
-    showToast(`${name} 그룹이 만들어졌어요! 🎉`, 'success');
+    showToast(`${escapeHTML(name)} 그룹이 만들어졌어요! 🎉`, 'success');
     _closeSub(sub);
   }
   sub.querySelector('#cg-header-create').addEventListener('click', doCreate);

@@ -65,7 +65,7 @@ function renderMypageScreen() {
       <div class="myp-hero-badge">LV.${step} ${CHARACTER_NAMES[step - 1]}</div>
     </div>
     <div class="myp-hero-info">
-      <div class="myp-hero-name">${s.user?.name || '도토리인간'}님</div>
+      <div class="myp-hero-name">${escapeHTML(s.user?.name) || '도토리인간'}님</div>
       <div class="myp-xp-section">
         <div class="myp-xp-label">
           <span>경험치</span>
@@ -130,7 +130,7 @@ function renderMypageScreen() {
     const goalCard = el('div', { class: 'myp-goal-card' });
     goalCard.innerHTML = `
       <div class="myp-goal-name-row">
-        <span class="myp-goal-name">${goal.name || '목표'}</span>
+        <span class="myp-goal-name">${escapeHTML(goal.name) || '목표'}</span>
         <span class="myp-goal-dday">D-${daysLeft}</span>
       </div>
       <div class="myp-goal-amounts">
@@ -382,7 +382,7 @@ function _mpSaved(s) {
 
 /* ── 이전 달 기록 여부 확인 ── */
 function _hasMonthPassed(s) {
-  const todayYM = (s.todayDate || new Date().toISOString().slice(0, 10)).slice(0, 7);
+  const todayYM = (s.todayDate || getTodayStr()).slice(0, 7);
   return (s.piggyHistory || []).some(h => h.date && h.date.slice(0, 7) < todayYM);
 }
 
@@ -427,7 +427,7 @@ async function _showMonthlyReport(s, onClose) {
     + `이 데이터로 소비 패턴과 다음 달 개선 포인트를 친근한 반말로 3-4문장으로 알려줘.`;
 
   try {
-    const res = await callDifyAPI(prompt, null, 'app-3nSZRlqMe9njxttiFMIrDvQM');
+    const res = await callDifyAPI(prompt, null, DIFY_SUMMARY_API_KEY);
     const loadEl = document.getElementById('report-loading');
     const bodyEl = document.getElementById('report-body');
     if (loadEl) loadEl.style.display = 'none';

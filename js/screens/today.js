@@ -6,7 +6,7 @@
 
 function renderTodayScreen() {
   const s     = AppState.getState();
-  const today = s.todayDate || new Date().toISOString().slice(0, 10);
+  const today = s.todayDate || getTodayStr();
 
   const screen = el('div', { class: 'screen jgt-screen', id: 'screen-today' });
 

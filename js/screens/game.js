@@ -9,8 +9,7 @@ function _stopGameLoop() {
   if (_gameRaf) { cancelAnimationFrame(_gameRaf); _gameRaf = null; }
 }
 
-/* ── remove.bg API 키 (여기에 입력) ── */
-const REMOVEBG_API_KEY = 'DNVpgYR4DtsEqWm3s9PRE8ba';
+// REMOVEBG_API_KEY는 js/config.js에서 로드됩니다.
 
 /* ── remove.bg로 배경 제거 후 Image 반환 (localStorage 캐시) ── */
 async function _removeBgAPI(imgSrc) {

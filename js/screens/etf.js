@@ -4,7 +4,7 @@
    =========================================== */
 'use strict';
 
-const ETF_AGENT_KEY = 'app-DOQfLHv1HyhsyzP2ko0Bvdfy';
+// ETF_AGENT_KEY는 js/config.js에서 로드됩니다.
 
 const ETF_PRODUCTS = [
   {

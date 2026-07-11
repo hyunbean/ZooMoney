@@ -138,7 +138,7 @@ function showDailySettleModal(data, onClose) {
       : `${formatKRW(Math.abs(data.delta))} 초과.`)
     + ` 짧고 친근하게 피드백 한 마디만 해줘 (2문장 이내, 반말).`;
 
-  callDifyAPI(prompt, null, 'app-3nSZRlqMe9njxttiFMIrDvQM')
+  callDifyAPI(prompt, null, DIFY_SUMMARY_API_KEY)
     .then(res => {
       const wrap = document.getElementById('settle-ai-wrap');
       if (!wrap) return;
@@ -358,7 +358,7 @@ function showNicknameResetModal() {
       <input class="ob-char-name-input" id="new-nickname-input"
         placeholder="새 닉네임을 입력해주세요"
         maxlength="12" autocomplete="off"
-        value="${s.user?.name || ''}"/>
+        value="${escapeHTML(s.user?.name)}"/>
     </div>
     <button class="ob-next-btn" id="nickname-confirm-btn" style="margin-top:0">▶ 확인 ◀</button>
   `;
@@ -373,7 +373,7 @@ function showNicknameResetModal() {
     if (!name) { showToast('닉네임을 입력해주세요!', 'warning'); return; }
     AppState.updateUserName(name);
     ModalManager.close();
-    showToast(`닉네임이 "${name}"으로 변경됐어요!`, 'success');
+    showToast(`닉네임이 "${escapeHTML(name)}"으로 변경됐어요!`, 'success');
   });
 }
 
@@ -389,7 +389,7 @@ function showNameResetModal() {
       <input class="ob-char-name-input" id="new-name-input"
         placeholder="새 캐릭터 이름을 입력해주세요"
         maxlength="10" autocomplete="off"
-        value="${s.user?.charName || s.user?.name || ''}"/>
+        value="${escapeHTML(s.user?.charName || s.user?.name)}"/>
     </div>
     <button class="ob-next-btn" id="name-confirm-btn" style="margin-top:0">▶ 확인 ◀</button>
   `;
@@ -404,7 +404,7 @@ function showNameResetModal() {
     if (!name) { showToast('이름을 입력해주세요!', 'warning'); return; }
     AppState.updateCharName(name);
     ModalManager.close();
-    showToast(`캐릭터 이름이 "${name}"으로 변경됐어요!`, 'success');
+    showToast(`캐릭터 이름이 "${escapeHTML(name)}"으로 변경됐어요!`, 'success');
     if (typeof updateHomeCharCard === 'function') updateHomeCharCard();
   });
 }
@@ -667,7 +667,7 @@ function showGoalChangeModal() {
     </div>
     <div class="input-group" style="margin-bottom:12px">
       <label class="ob-field-label">목표</label>
-      <input class="ob-input" id="goal-name-input" value="${g.name || ''}" placeholder="목표 이름"/>
+      <input class="ob-input" id="goal-name-input" value="${escapeHTML(g.name)}" placeholder="목표 이름"/>
     </div>
     <div class="input-group" style="margin-bottom:12px">
       <label class="ob-field-label">금액</label>

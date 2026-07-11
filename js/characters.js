@@ -30,10 +30,11 @@ function getCharStepName(typeIdx, step) {
   return `${prefix} ${type.name}`;
 }
 
-/* ── 커스텀 캐릭터 이름으로 표시 (petName 지정 시) ── */
+/* ── 커스텀 캐릭터 이름으로 표시 (petName 지정 시) ──
+   charName은 사용자 입력이므로 innerHTML에 들어가기 전 escape */
 function getCharDisplayName(step, charName) {
   const prefix = _STEP_PREFIXES[(step - 1)] || '새싹';
-  return `${prefix} ${charName || '도토리'}`;
+  return `${prefix} ${escapeHTML(charName) || '도토리'}`;
 }
 
 /* ── 하위 호환: CHARACTER_NAMES[step-1] 패턴 유지 ──

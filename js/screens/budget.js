@@ -4,7 +4,7 @@
    =========================================== */
 'use strict';
 
-const DIFY_BUDGET_API_KEY = 'app-m5Gid6rWrBNkKA2YbxYDTmew';
+// DIFY_BUDGET_API_KEY는 js/config.js에서 로드됩니다.
 
 const BUDGET_CATS = [
   { id: 'food',      icon: '🍽️', name: '식비' },

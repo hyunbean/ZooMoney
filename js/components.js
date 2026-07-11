@@ -143,7 +143,7 @@ function renderExpenseList(expenses, maxItems = 5) {
     item.innerHTML = `
       <div class="expense-cat-icon">${cat.icon}</div>
       <div class="expense-info">
-        <div class="expense-memo">${exp.memo || cat.name}</div>
+        <div class="expense-memo">${escapeHTML(exp.memo || cat.name)}</div>
         <div class="expense-cat">${cat.name} · <span class="expense-time">${exp.time}</span></div>
       </div>
       <div class="expense-amount">-${formatKRW(exp.amount)}</div>

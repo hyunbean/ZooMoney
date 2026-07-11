@@ -9,6 +9,7 @@ Thumbs.db
 .env.*
 **/secrets*
 **/*api*key*
+js/config.js
 
 # 빌드 산출물 (해당 시)
 node_modules/

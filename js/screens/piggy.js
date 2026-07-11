@@ -18,11 +18,11 @@ function _calcSaved(s) {
    마감일 - state.todayDate = 남은 일수
    (시스템 날짜 아닌 앱 내부 날짜 기준 → 하루 정산 시 즉시 반영) */
 function _calcDaysLeft(goal, todayStr) {
-  const startStr = goal.startDate || todayStr || new Date().toISOString().slice(0, 10);
+  const startStr = goal.startDate || todayStr || getTodayStr();
   const endDate  = new Date(startStr);
   endDate.setDate(endDate.getDate() + (goal.timelineMonths || 6) * 30);
 
-  const today = new Date(todayStr || new Date().toISOString().slice(0, 10));
+  const today = new Date(todayStr || getTodayStr());
   endDate.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
 
@@ -56,7 +56,7 @@ function renderPiggyScreen() {
     /* ── 목표 문장 (남은 금액 표시) ── */
     const goalText = el('div', { class: 'piggy-goal-text' });
     goalText.innerHTML = `
-      내 목표인 <span class="piggy-goal-name">${goal.name || '목표'}</span> 까지<br>
+      내 목표인 <span class="piggy-goal-name">${escapeHTML(goal.name) || '목표'}</span> 까지<br>
       <span class="piggy-goal-amount" id="piggy-remaining">${formatKRW(remaining)}</span> 남았고,<br>
       <span class="piggy-goal-days">${daysLeft}일</span> 남았습니다.
     `;

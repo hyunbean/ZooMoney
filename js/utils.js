@@ -18,9 +18,23 @@ function formatKRWShort(amount) {
   return formatKRW(amount);
 }
 
-/* ---- Date ---- */
-function getTodayStr() {
-  return new Date().toISOString().slice(0, 10);
+/* ---- Date ----
+   toISOString()은 UTC 기준이라 한국(UTC+9)에서는 오전 9시 이전에
+   날짜가 하루 일찍 바뀌는 버그가 있었음 → 로컬 타임존 기준으로 계산 */
+function getTodayStr(d = new Date()) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+/* ---- XSS 방지 ----
+   사용자 입력(목표명, 닉네임, 메모, 친구명 등)을 innerHTML에 넣기 전
+   반드시 이 함수를 통과시킬 것 */
+function escapeHTML(str) {
+  return String(str ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
 }
 function formatDate(dateStr) {
   if (!dateStr) return '';

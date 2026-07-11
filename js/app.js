@@ -209,6 +209,11 @@ const App = (() => {
       if (dashboard) animateShake(dashboard);
     });
 
+    // 오늘 정산을 이미 마쳐서 재클릭이 차단된 경우
+    AppState.on('SETTLE_BLOCKED', () => {
+      showToast('오늘 정산은 이미 끝났어요! 내일 다시 만나요 🙌', 'info');
+    });
+
     // Day settled → 정산 팝업을 큐에 먼저 넣음
     // (LEVEL_UP / BADGE_EARNED 이벤트는 settleDay() 내부에서 동기로 발생하므로
     //  이 핸들러 직후에 큐에 추가됨 → 자동으로 정산 → 레벨업 → 뱃지 순서 보장)
@@ -309,7 +314,7 @@ const App = (() => {
     const s = AppState.getState();
     if (!s.goal || !s.goal.monthlyTarget) return;
 
-    const todayYM = (s.todayDate || new Date().toISOString().slice(0, 10)).slice(0, 7);
+    const todayYM = (s.todayDate || getTodayStr()).slice(0, 7);
     if (localStorage.getItem('pq_etfMonth') === todayYM) return;
 
     const monthlySaved = (s.piggyHistory || [])
@@ -326,7 +331,7 @@ const App = (() => {
   /* ── 월간 리포트 체크 ── */
   function _checkMonthlyReport() {
     const s = AppState.getState();
-    const todayYM = (s.todayDate || new Date().toISOString().slice(0, 10)).slice(0, 7);
+    const todayYM = (s.todayDate || getTodayStr()).slice(0, 7);
     const prevMonths = (s.piggyHistory || [])
       .filter(h => h.date && h.date.slice(0, 7) < todayYM)
       .map(h => h.date.slice(0, 7));
