@@ -49,7 +49,15 @@ const App = (() => {
   /* ---------- Boot ---------- */
   function init() {
     ModalManager.init();
-    const onboarded = AppState.init();
+    let onboarded = AppState.init();
+
+    // 첫 방문(온보딩 미완료)이면 빈 온보딩 화면 대신
+    // 이미 사용 중인 것처럼 보이는 데모 상태로 바로 시작한다.
+    // (라이브 데모엔 Dify API 키가 없어 온보딩 첫 단계에서 막히기 때문)
+    if (!onboarded) {
+      AppState.seedDemoState();
+      onboarded = true;
+    }
 
     // Subscribe to state events
     subscribeEvents();

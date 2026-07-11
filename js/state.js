@@ -517,6 +517,12 @@ const AppState = (() => {
       emit('NAVIGATE', { screen });
     },
 
+    // 첫 방문(온보딩 미완료) 시 앱 부트스트랩(app.js)에서 호출 —
+    // 빈 온보딩 대신 이미 사용 중인 것처럼 보이는 데모 상태로 시작시킨다.
+    seedDemoState() {
+      _seedDemoState();
+    },
+
     getState() { return state; },
     getToday() { return state.expenses.filter(e => e.date === state.todayDate); },
     getRemainingBudget() { return state.dailyBudget - state.todaySpent; },
@@ -607,6 +613,63 @@ const AppState = (() => {
       rate: Math.floor(Math.random() * 40 + 55),
       char: CHARACTERS[i % 5],
     }));
+  }
+
+  function _daysAgoStr(n) {
+    const d = new Date();
+    d.setDate(d.getDate() - n);
+    return getTodayStr(d);
+  }
+
+  /* ---------- 데모 초기 상태 ----------
+     첫 방문(저장된 state 없음) 시 빈 온보딩부터 시작하는 대신,
+     이미 2~3주 사용한 것처럼 보이는 상태로 시작한다.
+     라이브 데모(GitHub Pages)엔 Dify API 키가 없어 온보딩 첫 단계(AI 응답 대기)에서
+     막히기 때문에, 완성된 화면들을 바로 보여주는 쪽이 훨씬 낫다. */
+  function _seedDemoState() {
+    state = structuredClone(DEFAULT_STATE);
+    state.inviteCode = _generateCode();
+    state.friends = _mockFriends();
+
+    state.user = { name: '민지', charName: '뽕뽕' };
+    state.onboarded = true;
+    state.characterType = 3; // 고릴라
+    state.characterLevel = 3;
+    state.characterXP = 4;
+
+    // currentSavings + piggyBalance(아래 deltas 합 42,800원) 기준 목표 달성률이
+    // calcCharStep(characters.js)의 3단계(40~60%) 구간에 들어오도록 역산한 값
+    // (표시되는 캐릭터 성장 단계 = characterLevel 이 서로 어긋나 보이지 않도록)
+    state.goal = {
+      name: '아이패드 Pro',
+      category: 'shopping',
+      targetAmount: 1500000,
+      currentSavings: 580000,
+      monthlyExpenses: 800000,
+      timelineMonths: 6,
+      monthlyTarget: 153334,
+      startDate: _daysAgoStr(18),
+      cardCategoryTotals: { food: 320000, cafe: 90000, transport: 60000, shopping: 150000, entertain: 70000, etc: 40000 },
+      categoryBudgets: null,
+    };
+    state.monthlyBudget = 800000;
+    state.dailyBudget = 21555;
+    state.todayDate = getTodayStr();
+    state.todaySpent = 8500;
+
+    // 지난 12일치 정산 기록 (대부분 성공, 일부 실패 섞어 자연스럽게)
+    const deltas = [4200, 6100, -1800, 3000, 5400, 2100, 7300, -900, 1500, 6800, 3900, 5200];
+    state.piggyHistory = deltas.map((delta, i) => ({
+      date: _daysAgoStr(deltas.length - i),
+      delta,
+      reason: delta >= 0 ? '예산 절약' : '예산 초과',
+    }));
+    state.piggyBalance = state.piggyHistory.reduce((sum, h) => sum + h.delta, 0);
+
+    state.shieldCount = 1;
+    state.badges = ['first_settle', 'streak_3', 'level_3', 'social_1'];
+
+    persist();
   }
 
   return { ...actions, on, off, emit, XP_PER_LEVEL, MAX_LEVEL };
