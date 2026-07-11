@@ -48,14 +48,16 @@
   <img src="docs/screenshot-dify-agents.png" width="720" alt="Dify 에이전트 6종 개요" />
 </p>
 
-| 에이전트 | 연결 파일 | 역할 |
-|---|---|---|
-| 목표설정 | `js/screens/onboarding.js` | 상품 실시간 가격 검색 (Tavily) |
-| 소비분석 | `js/screens/onboarding.js` | 카드 내역 → 카테고리 분류 + 이상 지출 탐지 |
-| 예산플래닝 | `js/screens/budget.js` | 카테고리별 예산 추천 + 저축 부족분 자동 조정 |
-| 트레이너 챗봇 | `js/screens/trainer_chat.js` | 인텐트 분류 + 지식베이스 연동 대화 |
-| 소비요약 | `js/modals.js`, `js/screens/mypage.js` | 하루 정산 코멘트 + 월간 소비 리포트 |
-| ETF 코치 | `js/modals.js` | 초과 저축액 기반 ETF 추천 (RAG) |
+| 에이전트 | 연결 파일 | 역할 | Dify DSL |
+|---|---|---|---|
+| 목표설정 | `js/screens/onboarding.js` | 상품 실시간 가격 검색 (Tavily) | [목표설정.yml](dify/목표설정.yml) |
+| 소비분석 | `js/screens/onboarding.js` | 카드 내역 → 카테고리 분류 + 이상 지출 탐지 | [소비분석.yml](dify/소비분석.yml) |
+| 예산플래닝 | `js/screens/budget.js` | 카테고리별 예산 추천 + 저축 부족분 자동 조정 | [예산분석.yml](dify/예산분석.yml) |
+| 트레이너 챗봇 | `js/screens/trainer_chat.js` | 인텐트 분류 + 지식베이스 연동 대화 | [트레이너챗봇.yml](dify/트레이너챗봇.yml) |
+| 소비요약 | `js/modals.js`, `js/screens/mypage.js` | 하루 정산 코멘트 + 월간 소비 리포트 | [소비요약.yml](dify/소비요약.yml) |
+| ETF 코치 | `js/modals.js` | 초과 저축액 기반 ETF 추천 (RAG) | [ETF_chatbot.yml](dify/ETF_chatbot.yml) |
+
+`dify/` 폴더의 DSL은 Dify 콘솔에서 그대로 임포트해 워크플로 구조·프롬프트·모델 설정을 확인할 수 있습니다. 단, RAG 노드의 `dataset_ids`는 원 워크스페이스의 지식베이스에 묶여 있어 임포트 후 본인 지식베이스로 재연결이 필요합니다.
 
 ---
 
@@ -104,6 +106,7 @@ node --test tests/
 │                            #   마이페이지, 커뮤니티, 트레이너챗봇, 예산, ETF, 상점)
 ├── tests/                  # node --test 유닛테스트
 ├── images/, fonts/         # 캐릭터 스프라이트, 픽셀 폰트(DungGeunMo)
+├── dify/                   # Dify 에이전트 6종 DSL(yml) 원본
 └── FEATURES.md             # 기능 상세 문서
 ```
 

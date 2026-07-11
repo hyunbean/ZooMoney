@@ -1,0 +1,852 @@
+app:
+  description: 'ZooMoney 절약 코치. 질문을 6개 유형으로 분류해 지식베이스(RAG) 기반으로 절약 팁·충동구매 상담·서비스
+    추천·목표 변경을 처리하는 메인 챗봇.'
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: advanced-chat
+  name: 트레이너챗봇
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/cohere:0.0.16@b116712763a1ffb456565684a4406a3dd74f365d20ac19ecbaa0f62e85f1b7d4
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.4.3@84d4aae2c55724f6cdaecfadceed061d7e6b6693ae8945ea2dcd155f280743ef
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: start
+        targetType: question-classifier
+      id: start-qc
+      source: '1779199652146'
+      sourceHandle: source
+      target: question-classifier
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: qc-class1-saving
+      source: question-classifier
+      sourceHandle: class-1
+      target: '17797023199291'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: saving-kr-llm
+      source: '17797023199291'
+      sourceHandle: source
+      target: '17797023199292'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: saving-llm-answer
+      source: '17797023199292'
+      sourceHandle: source
+      target: '17797023199290'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: qc-class2-impulse
+      source: question-classifier
+      sourceHandle: class-2
+      target: '1779701596903'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: impulse-kr-llm
+      source: '1779701596903'
+      sourceHandle: source
+      target: '1779701609898'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: impulse-llm-answer
+      source: '1779701609898'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: qc-class3-app
+      source: question-classifier
+      sourceHandle: class-3
+      target: '1779701849364'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: app-kr-llm
+      source: '1779701849364'
+      sourceHandle: source
+      target: '1779701853488'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: app-llm-answer
+      source: '1779701853488'
+      sourceHandle: source
+      target: '1779701858795'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: question-classifier
+        targetType: llm
+      id: qc-class4-goal
+      source: question-classifier
+      sourceHandle: class-4
+      target: '17797023220922'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: goal-llm-answer
+      source: '17797023220922'
+      sourceHandle: source
+      target: '17797023220910'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: question-classifier
+        targetType: llm
+      id: qc-class5-budget
+      source: question-classifier
+      sourceHandle: class-5
+      target: '17797023777062'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: budget-llm-answer
+      source: '17797023777062'
+      sourceHandle: source
+      target: '17797023777060'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: question-classifier
+        targetType: llm
+      id: qc-class6-other
+      source: question-classifier
+      sourceHandle: class-6
+      target: '17797027712721'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: other-llm-answer
+      source: '17797027712721'
+      sourceHandle: source
+      target: '17797027712720'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 시작
+        type: start
+        variables: []
+      height: 72
+      id: '1779199652146'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        classes:
+        - id: class-1
+          name: 절약 방법, 저축 팁, 돈 아끼는 법이 궁금한 경우
+        - id: class-2
+          name: 충동구매, 소비 자제, 쇼핑 유혹을 참는 방법
+        - id: class-3
+          name: 절약 앱, 카드, K패스, 알뜰폰, 배달앱 추천이 필요한 경우
+        - id: class-4
+          name: 저축 목표 변경, 목표 금액이나 기간을 바꾸고 싶은 경우
+        - id: class-5
+          name: 예산 분석, 카테고리별 지출, 얼마 썼는지 계산이 필요한 경우
+        - id: class-6
+          name: 저축, 절약, 예산, 앱 기능과 관련 없는 모든 질문
+        instruction: ''
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        query_variable_selector:
+        - sys
+        - query
+        selected: false
+        title: 질문분류기
+        topics: []
+        type: question-classifier
+      height: 345
+      id: question-classifier
+      position:
+        x: 380
+        y: 200
+      positionAbsolute:
+        x: 380
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        dataset_ids:
+        - uAhISJVmYPM2eUdZfFpYPGSSlnNsco9k6GWH5HCa3vaZRMPJo3aUuHZOs65qKk4P
+        metadata_filtering_mode: disabled
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: rerank-multilingual-v3.0
+            provider: langgenius/cohere/cohere
+          score_threshold: null
+          top_k: 3
+        query_attachment_selector: []
+        query_variable_selector:
+        - '1779199652146'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 지식 검색 (절약팁)
+        type: knowledge-retrieval
+      height: 89
+      id: '17797023199291'
+      position:
+        x: 700
+        y: 80
+      positionAbsolute:
+        x: 700
+        y: 80
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '17797023199291'
+          - result
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: f5c1008c-9df9-48d2-8631-96dea0806ed1
+          role: system
+          text: '너는 절약코치 트레이너야. 따뜻하고 친근한 말투.
+
+
+            아래 지식을 참고해서 실용적인 절약 팁을 알려줘.
+
+
+            참고 지식:
+
+            {{#context#}}'
+        - id: 4b269af5-1548-4878-a295-96193154c496
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM 절약팁
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '17797023199292'
+      position:
+        x: 1000
+        y: 80
+      positionAbsolute:
+        x: 1000
+        y: 80
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '{{#17797023199292.text#}}'
+        selected: false
+        title: 답변 절약팁
+        type: answer
+        variables: []
+      height: 101
+      id: '17797023199290'
+      position:
+        x: 1300
+        y: 80
+      positionAbsolute:
+        x: 1300
+        y: 80
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        dataset_ids:
+        - uAhISJVmYPM2eUdZfFpYPGSSlnNsco9k6GWH5HCa3vaZRMPJo3aUuHZOs65qKk4P
+        metadata_filtering_mode: disabled
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: rerank-multilingual-v3.0
+            provider: langgenius/cohere/cohere
+          score_threshold: null
+          top_k: 3
+        query_attachment_selector: []
+        query_variable_selector:
+        - '1779199652146'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 지식 검색 (충동구매)
+        type: knowledge-retrieval
+      height: 89
+      id: '1779701596903'
+      position:
+        x: 700
+        y: 220
+      positionAbsolute:
+        x: 700
+        y: 220
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1779701596903'
+          - result
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: f5c1008c-9df9-48d2-8631-96dea0806ed1
+          role: system
+          text: '너는 절약코치 트레이너야. 따뜻하고 친근한 말투.
+
+
+            유저가 충동구매나 소비 자제에 대해 물어보고 있어.
+
+            공감하면서 아래 지식 기반으로 실용적인 방법을 알려줘.
+
+
+            참고 지식:
+
+            {{#context#}}'
+        - id: 080b9d79-8623-4dca-8d4b-6f84d1578a77
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM 충동구매
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '1779701609898'
+      position:
+        x: 1000
+        y: 220
+      positionAbsolute:
+        x: 1000
+        y: 220
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '{{#1779701609898.text#}}'
+        selected: false
+        title: 답변 충동구매
+        type: answer
+        variables: []
+      height: 101
+      id: answer
+      position:
+        x: 1300
+        y: 220
+      positionAbsolute:
+        x: 1300
+        y: 220
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        dataset_ids:
+        - uAhISJVmYPM2eUdZfFpYPGSSlnNsco9k6GWH5HCa3vaZRMPJo3aUuHZOs65qKk4P
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: rerank-multilingual-v3.0
+            provider: langgenius/cohere/cohere
+          score_threshold: null
+          top_k: 3
+        query_attachment_selector: []
+        query_variable_selector:
+        - '1779199652146'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 지식 검색 (앱서비스)
+        type: knowledge-retrieval
+      height: 89
+      id: '1779701849364'
+      position:
+        x: 700
+        y: 360
+      positionAbsolute:
+        x: 700
+        y: 360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1779701849364'
+          - result
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.5
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 4f970ea6-ad65-4884-96a7-d8d3c6b9c7d3
+          role: system
+          text: '너는 절약코치 트레이너야. 따뜻하고 친근한 말투.
+
+
+            유저가 절약에 도움되는 앱, 카드, 서비스 추천을 원해.
+
+            아래 지식에서 상황에 맞는 것을 골라 구체적으로 추천해줘.
+
+
+            참고 지식:
+
+            {{#context#}}'
+        - id: 35fe3161-b9cc-4d6e-8675-ae507ec81aa0
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM 앱서비스
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '1779701853488'
+      position:
+        x: 1000
+        y: 360
+      positionAbsolute:
+        x: 1000
+        y: 360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '{{#1779701853488.text#}}'
+        selected: false
+        title: 답변 앱서비스
+        type: answer
+        variables: []
+      height: 101
+      id: '1779701858795'
+      position:
+        x: 1300
+        y: 360
+      positionAbsolute:
+        x: 1300
+        y: 360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.3
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: f5c1008c-9df9-48d2-8631-96dea0806ed1
+          role: system
+          text: '너는 절약코치 트레이너야. 따뜻하고 친근한 말투.
+
+
+            유저가 저축 목표를 변경하고 싶어해.
+
+            아래 3가지를 대화로 순서대로 수집해:
+
+            1. 새 목표 이름 (예: 에어팟, 여행, 비상금)
+
+            2. 목표 금액 (원 단위 숫자)
+
+            3. 목표 기간 (몇 개월)
+
+
+            모든 정보 수집 완료 즉시 아래 JSON만 출력 (다른 말 일절 금지):
+
+            {"action":"update_goal","name":"이름","targetAmount":숫자,"timelineMonths":숫자}'
+        selected: false
+        title: LLM 목표변경
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '17797023220922'
+      position:
+        x: 700
+        y: 500
+      positionAbsolute:
+        x: 700
+        y: 500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '{{#17797023220922.text#}}'
+        selected: false
+        title: 답변 목표변경
+        type: answer
+        variables: []
+      height: 101
+      id: '17797023220910'
+      position:
+        x: 1000
+        y: 500
+      positionAbsolute:
+        x: 1000
+        y: 500
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.3
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: f5c1008c-9df9-48d2-8631-96dea0806ed1
+          role: system
+          text: '너는 절약코치 트레이너야. 따뜻하고 친근한 말투.
+
+
+            유저가 예산이나 지출에 대해 물어보고 있어.
+
+            구체적인 숫자나 계산이 필요하면 같이 계산해주고
+
+            카테고리별 절약 방법도 함께 알려줘.'
+        - id: 5767afae-68af-476b-aecf-4af54debfed8
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM 예산계산
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '17797023777062'
+      position:
+        x: 700
+        y: 640
+      positionAbsolute:
+        x: 700
+        y: 640
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '{{#17797023777062.text#}}'
+        selected: false
+        title: 답변 예산계산
+        type: answer
+        variables: []
+      height: 101
+      id: '17797023777060'
+      position:
+        x: 1000
+        y: 640
+      positionAbsolute:
+        x: 1000
+        y: 640
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: f5c1008c-9df9-48d2-8631-96dea0806ed1
+          role: system
+          text: '당신은 저축 앱 "ZooMoney"의 트레이너입니다.
+
+            사용자가 저축, 절약, 예산, 소비 습관, 이 앱의 기능과 관련 없는 질문을 했습니다.
+
+            정중하게 답변이 어렵다고 말하고, 저축/절약 관련 질문을 유도하세요.
+
+
+            예시 응답:
+
+            "저는 저축 트레이너라 그 질문엔 답하기 어려워! 😅
+
+            절약 팁, 예산 관리, 목표 저축에 대해서라면 뭐든 물어봐!"'
+        - id: 3b0d3f9d-29c0-42e1-adf3-c91714c0e55e
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: LLM 기타
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '17797027712721'
+      position:
+        x: 700
+        y: 780
+      positionAbsolute:
+        x: 700
+        y: 780
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        answer: '{{#17797027712721.text#}}'
+        selected: false
+        title: 답변 기타
+        type: answer
+        variables: []
+      height: 101
+      id: '17797027712720'
+      position:
+        x: 1000
+        y: 780
+      positionAbsolute:
+        x: 1000
+        y: 780
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    viewport:
+      x: 27.250195260279725
+      y: 8.086293987423403
+      zoom: 0.5020543720875715
+  rag_pipeline_variables: []

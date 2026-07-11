@@ -1,0 +1,310 @@
+app:
+  description: '카테고리별 지출과 월 저축 목표를 받아 카테고리별 절감 예산(JSON)을 산출. 코드 노드가 합계를 검증·보정해 목표
+    미달을 방지.'
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: advanced-chat
+  name: 예산분석
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/cohere:0.0.16@b116712763a1ffb456565684a4406a3dd74f365d20ac19ecbaa0f62e85f1b7d4
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.4.3@84d4aae2c55724f6cdaecfadceed061d7e6b6693ae8945ea2dcd155f280743ef
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: llm-source-1779193676734-target
+      source: llm
+      sourceHandle: source
+      target: '1779193676734'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 1779193676734-source-answer-target
+      source: '1779193676734'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1779193137632-source-1779705381410-target
+      source: '1779193137632'
+      sourceHandle: source
+      target: '1779705381410'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1779705381410-source-llm-target
+      source: '1779705381410'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 시작
+        type: start
+        variables: []
+      height: 74
+      id: '1779193137632'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1779705381410'
+          - result
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: b1fab643-b52e-4c6f-9732-1071fcbd5801
+          role: system
+          text: "아래 절약 지식을 참고해서 각 카테고리의 tip을 구체적으로 작성해줘.\n\n참고 지식:\n{{#context#}}\n\
+            \n당신은 개인 재무 코치입니다. 사용자의 카테고리별 월 평균 지출과 월 저축 목표를 분석하여, 각 카테고리에서 얼마씩 줄여야\
+            \ 하는지 제안합니다.\n\n[계산 규칙]\n- (current - suggested) 전체 합계가 반드시\
+            \ 월 저축 목표 금액 이상이어야 합니다\n- 절감은 유연한 카테고리(식비, 쇼핑, 엔터)에 집중하고, 교통처럼 고정비는 최소한만\
+            \ 줄이세요\n- suggested는 0보다 커야 하며 current를 초과할 수 없습니다\n\n[출력 규칙]\n- 아래 JSON\
+            \ 코드블록만 출력하세요\n- JSON 외 어떤 텍스트도 출력하지 마세요\n- tip은 구체적이고 실천 가능한 한 줄 (20자\
+            \ 이내)\n\n```json\n[\n  {\"id\":\"food\",\"current\":숫자,\"suggested\":숫자,\"\
+            tip\":\"한 줄 팁\"},\n  {\"id\":\"cafe\",\"current\":숫자,\"suggested\":숫자,\"\
+            tip\":\"한 줄 팁\"},\n  {\"id\":\"transport\",\"current\":숫자,\"suggested\"\
+            :숫자,\"tip\":\"한 줄 팁\"},\n  {\"id\":\"shopping\",\"current\":숫자,\"suggested\"\
+            :숫자,\"tip\":\"한 줄 팁\"},\n  {\"id\":\"entertain\",\"current\":숫자,\"suggested\"\
+            :숫자,\"tip\":\"한 줄 팁\"},\n  {\"id\":\"etc\",\"current\":숫자,\"suggested\"\
+            :숫자,\"tip\":\"한 줄 팁\"}\n]\n```\n\n출력 전 반드시 확인: sum(current - suggested) >=\
+            \ 월 저축 목표. 미달이면 식비·쇼핑·엔터 순으로 더 삭감하고 다시 계산하세요."
+        - id: 848dca9e-a593-4428-b45b-ddee8c026b97
+          role: user
+          text: '{{#sys.query#}}
+
+            출력 전 (current-suggested) 합계를 계산하고, 월 저축 목표 미만이면 수정 후 JSON만 출력하세요.'
+        selected: true
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 89
+      id: llm
+      position:
+        x: 679
+        y: 282
+      positionAbsolute:
+        x: 679
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        answer: '{{#1779193676734.result#}}'
+        selected: false
+        title: 답변
+        type: answer
+        variables: []
+      height: 103
+      id: answer
+      position:
+        x: 1280
+        y: 282
+      positionAbsolute:
+        x: 1280
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "import json, re\n\ndef main(llm_output: str, monthly_target: str) ->\
+          \ dict:\n    m = re.search(r'월 저축 목표.*?(\\d[\\d,]+)', monthly_target)\n\
+          \    target = int(m.group(1).replace(',', '')) if m else 0\n\n    jm = re.search(r'```json\\\
+          s*([\\s\\S]*?)\\s*```', llm_output)\n    if not jm:\n        return {\"\
+          result\": llm_output}\n    budgets = json.loads(jm.group(1))\n\n    gap\
+          \ = target - sum(b['current'] - b['suggested'] for b in budgets)\n\n   \
+          \ if gap > 0:\n        # 유연한 카테고리만 대상 (교통 제외)\n        flexible = [b for\
+          \ b in budgets if b['id'] != 'transport']\n        total_flex = sum(b['suggested']\
+          \ for b in flexible)\n\n        for b in flexible:\n            if total_flex\
+          \ <= 0:\n                break\n            # 현재 suggested 비율만큼 분담\n   \
+          \         share = round(gap * b['suggested'] / total_flex)\n           \
+          \ cut = min(share, b['suggested'] - 10000)  # 최소 10,000원은 남김\n         \
+          \   if cut > 0:\n                b['suggested'] -= cut\n               \
+          \ gap -= cut\n\n        # 그래도 남으면 flexible 중 가장 큰 것에서 처리\n        if gap\
+          \ > 0:\n            largest = max(flexible, key=lambda b: b['suggested'])\n\
+          \            largest['suggested'] = max(10000, largest['suggested'] - gap)\n\
+          \n    return {\"result\": \"```json\\n\" + json.dumps(budgets, ensure_ascii=False)\
+          \ + \"\\n```\"}"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 코드
+        type: code
+        variables:
+        - value_selector:
+          - llm
+          - text
+          value_type: string
+          variable: llm_output
+        - value_selector:
+          - sys
+          - query
+          value_type: string
+          variable: monthly_target
+      height: 53
+      id: '1779193676734'
+      position:
+        x: 980
+        y: 282
+      positionAbsolute:
+        x: 980
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        dataset_ids:
+        - uAhISJVmYPM2eUdZfFpYPGSSlnNsco9k6GWH5HCa3vaZRMPJo3aUuHZOs65qKk4P
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: rerank-multilingual-v3.0
+            provider: langgenius/cohere/cohere
+          score_threshold: null
+          top_k: 3
+        query_attachment_selector: []
+        query_variable_selector:
+        - '1779193137632'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 지식 검색
+        type: knowledge-retrieval
+      height: 91
+      id: '1779705381410'
+      position:
+        x: 380
+        y: 282
+      positionAbsolute:
+        x: 380
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: -40.12979291086231
+      y: 52.7342261531073
+      zoom: 0.5755897451799526
+  rag_pipeline_variables: []

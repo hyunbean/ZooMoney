@@ -1,0 +1,332 @@
+app:
+  description: '거래내역 텍스트를 코드 노드로 카테고리별 집계한 뒤, 이상치 소비를 확인하고 제안 예산(JSON)을 산출하는 소비 분석
+    챗봇.'
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: advanced-chat
+  name: 소비분석
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/cohere:0.0.16@b116712763a1ffb456565684a4406a3dd74f365d20ac19ecbaa0f62e85f1b7d4
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.4.3@84d4aae2c55724f6cdaecfadceed061d7e6b6693ae8945ea2dcd155f280743ef
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: llm-answer
+      source: llm
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: code
+      id: 1779172956536-source-1779704662201-target
+      source: '1779172956536'
+      sourceHandle: source
+      target: '1779704662201'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: knowledge-retrieval
+      id: 1779704662201-source-1779704728090-target
+      source: '1779704662201'
+      sourceHandle: source
+      target: '1779704728090'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1779704728090-source-llm-target
+      source: '1779704728090'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 시작
+        type: start
+        variables: []
+      height: 73
+      id: '1779172956536'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1779704728090'
+          - result
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 6
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 7f01813d-b714-4f5e-9ddc-16e2c263677d
+          role: system
+          text: '너는 소비 분석 전문가야.
+
+
+            카테고리별 분석 결과:
+
+            {{#1779704662201.summary#}}
+
+
+            참고 절약 팁:
+
+            {{#context#}}
+
+
+            규칙:
+
+            1. 이상치 항목(금액이 큰 건)에 대해 개별 건(가맹점 + 금액)으로 질문 (한 번에 1개씩)
+
+            2. 카페/식비 질문: 반드시 "혼자만의 소비인가요?" 형식
+
+            3. 식비·카페 외 카테고리(쇼핑, 교통 등)는 질문 생략
+
+            4. 모든 질문 끝나면 아래 JSON만 출력 (다른 말 없이):
+
+            ```json
+
+            {"monthlySuggestedBudget": 숫자, "outliers": [], "questions": []}
+
+            ```
+
+
+            [이상치 질문 규칙 — 반드시 준수]
+
+            이상치 질문은 오직 식비(3만원 이상)와 카페(1만원 이상)만 허용합니다.
+
+            쇼핑(유니클로, 무신사 등), 교통(KTX 등), 문화, 간편결제는
+
+            금액과 무관하게 절대 이상치 질문을 하지 않습니다.'
+        - id: 5b0dff91-359a-4a8b-8ce8-7d0d585d3cb4
+          role: user
+          text: '{{#sys.query#}}'
+        selected: true
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: llm
+      position:
+        x: 980
+        y: 282
+      positionAbsolute:
+        x: 980
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#llm.text#}}'
+        selected: false
+        title: 답변
+        type: answer
+        variables: []
+      height: 102
+      id: answer
+      position:
+        x: 1280
+        y: 282
+      positionAbsolute:
+        x: 1280
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "def main(sys_query: str) -> dict:\n    import re\n\n    lines = sys_query.split('\\\
+          n')\n    cats = {'food': 0, 'cafe': 0, 'transport': 0, 'shopping': 0, 'entertain':\
+          \ 0, 'etc': 0}\n    found = False\n\n    for line in lines:\n        m =\
+          \ re.search(r'.+?\\s*\\|\\s*(.+?)\\s*\\|\\s*([\\d,]+)원', line)\n       \
+          \ if not m:\n            continue\n        merchant = m.group(1).strip()\n\
+          \        amount = int(m.group(2).replace(',', ''))\n        found = True\n\
+          \n        if re.search(r'커피|카페|메가엠지씨|컴포즈|스타벅스|이디야', merchant):\n       \
+          \     cats['cafe'] += amount\n        elif re.search(r'맥도날드|버거킹|면옥|쌍용각|배달의민족|BHC|bhc|치킨|타코|앤티앤|콩게미',\
+          \ merchant):\n            cats['food'] += amount\n        elif re.search(r'주유소|철도|버스|지하철',\
+          \ merchant):\n            cats['transport'] += amount\n        elif re.search(r'메가박스|롯데시네마|디트릭스',\
+          \ merchant):\n            cats['entertain'] += amount\n        elif re.search(r'무신사|유니클로|무지|MUJI|다이소|이마트|GS25|씨유|CU',\
+          \ merchant):\n            cats['shopping'] += amount\n        else:\n  \
+          \          cats['etc'] += amount\n\n    if not found:\n        return {'has_data':\
+          \ False, 'summary': '', 'top_category': ''}\n\n    cat_names = {'food':'식비','cafe':'카페','transport':'교통','shopping':'쇼핑','entertain':'엔터','etc':'기타'}\n\
+          \    total = sum(cats.values())\n    sorted_cats = sorted(cats.items(),\
+          \ key=lambda x: x[1], reverse=True)\n    sorted_cats = [(k, v) for k, v\
+          \ in sorted_cats if v > 0]\n    if not sorted_cats:\n        return {'has_data': False, 'summary': '', 'top_category': ''}\n\n    top_cat = cat_names[sorted_cats[0][0]]\n\
+          \    summary = ', '.join([f\"{cat_names[k]}: {v:,}원 ({round(v/total*100)}%)\"\
+          \ for k, v in sorted_cats])\n\n    return {'has_data': True, 'summary':\
+          \ summary, 'top_category': top_cat}"
+        code_language: python3
+        outputs:
+          has_data:
+            children: null
+            type: boolean
+          summary:
+            children: null
+            type: string
+          top_category:
+            children: null
+            type: string
+        selected: false
+        title: 코드
+        type: code
+        variables:
+        - value_selector:
+          - sys
+          - query
+          value_type: string
+          variable: sys_query
+      height: 52
+      id: '1779704662201'
+      position:
+        x: 380
+        y: 282
+      positionAbsolute:
+        x: 380
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        dataset_ids:
+        - uAhISJVmYPM2eUdZfFpYPGSSlnNsco9k6GWH5HCa3vaZRMPJo3aUuHZOs65qKk4P
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: rerank-multilingual-v3.0
+            provider: langgenius/cohere/cohere
+          score_threshold: null
+          top_k: 3
+        query_attachment_selector: []
+        query_variable_selector:
+        - '1779704662201'
+        - top_category
+        retrieval_mode: multiple
+        selected: false
+        title: 지식 검색
+        type: knowledge-retrieval
+      height: 90
+      id: '1779704728090'
+      position:
+        x: 680
+        y: 282
+      positionAbsolute:
+        x: 680
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 104.34138149301907
+      y: 55.52641537284006
+      zoom: 0.6464207821944222
+  rag_pipeline_variables: []
