@@ -1,36 +1,36 @@
 /* ===========================================
    TUTORIAL.JS — 주머니
-   스크린샷 기반 슬라이드쇼 튜토리얼
+   코치마크 기반 튜토리얼 (스크린샷 불필요)
    =========================================== */
 'use strict';
 
 const Tutorial = (() => {
 
   const STEPS = [
-    { img: 'images/tutorial/home_1.png' },
-    { img: 'images/tutorial/home_2.png' },
-    { img: 'images/tutorial/home_3.png' },
-    { img: 'images/tutorial/home_4.png' },
-    { img: 'images/tutorial/home_5.png' },
+    { icon: '🏠', title: '홈 화면', desc: '오늘 쓸 수 있는 예산과 캐릭터 상태를 한눈에 확인해요.' },
+    { icon: '💰', title: '저금통', desc: '예산을 아낄수록 저금통이 채워져요.' },
+    { icon: '➕', title: '지출 기록', desc: '오른쪽 아래 + 버튼으로 오늘 쓴 돈을 바로 기록하세요.' },
+    { icon: '🐾', title: '캐릭터 성장', desc: '꾸준히 저금하면 캐릭터가 성장하고 뱃지를 얻어요.' },
+    { icon: '🎉', title: '시작해볼까요?', desc: '이제 준비가 끝났어요. 홈에서 시작해봐요!' },
   ];
 
   const STEPS_TODAY = [
-    { img: 'images/tutorial/today_1.png' },
-    { img: 'images/tutorial/today_2.png' },
+    { icon: '📅', title: '오늘 탭', desc: '오늘 하루의 지출 내역을 시간순으로 볼 수 있어요.' },
+    { icon: '📊', title: '카테고리별 합계', desc: '어디에 얼마를 썼는지 카테고리별로 정리돼요.' },
   ];
 
   const STEPS_SOCIAL = [
-    { img: 'images/tutorial/social_1.png' },
-    { img: 'images/tutorial/social_2.png' },
-    { img: 'images/tutorial/social_3.png' },
-    { img: 'images/tutorial/social_4.png' },
-    { img: 'images/tutorial/social_5.png' },
+    { icon: '👥', title: '소셜 탭', desc: '친구들과 함께 저금 현황을 공유해요.' },
+    { icon: '🏆', title: '랭킹', desc: '친구들과 저금 랭킹을 비교할 수 있어요.' },
+    { icon: '💬', title: '응원 메시지', desc: '서로 응원 메시지를 주고받아요.' },
+    { icon: '🎁', title: '초대 코드', desc: '초대 코드로 친구를 그룹에 초대해보세요.' },
+    { icon: '✨', title: '함께 성장', desc: '함께할수록 저금이 더 즐거워져요!' },
   ];
 
   const STEPS_MYPAGE = [
-    { img: 'images/tutorial/mypage_1.png' },
-    { img: 'images/tutorial/mypage_2.png' },
-    { img: 'images/tutorial/mypage_3.png' },
+    { icon: '👤', title: '마이페이지', desc: '내 정보와 설정을 관리할 수 있어요.' },
+    { icon: '🏅', title: '뱃지 컬렉션', desc: '지금까지 모은 뱃지를 모아볼 수 있어요.' },
+    { icon: '⚙️', title: '설정', desc: '닉네임, 캐릭터, 알림 등을 자유롭게 바꿔보세요.' },
   ];
 
   let overlayEl = null;
@@ -58,7 +58,9 @@ const Tutorial = (() => {
       overlayEl.innerHTML = `
         <button class="tut-slide-skip" id="tut-skip">건너뛰기</button>
         <div class="tut-slide-img-wrap">
-          <img class="tut-slide-img" src="${step.img}" alt="튜토리얼"/>
+          <div class="tut-coach-icon">${step.icon}</div>
+          <div class="tut-coach-title">${step.title}</div>
+          <div class="tut-coach-desc">${step.desc}</div>
         </div>
         <div class="tut-slide-bottom">
           <div class="tut-slide-dots">

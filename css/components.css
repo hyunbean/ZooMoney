@@ -42,16 +42,29 @@
 .tut-slide-img-wrap {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 16px 8px;
+  padding: 48px 24px 8px;
   width: 100%;
+  text-align: center;
 }
-.tut-slide-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border: 2px solid rgba(255,255,255,0.15);
+.tut-coach-icon {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.tut-coach-title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+.tut-coach-desc {
+  color: rgba(255,255,255,0.75);
+  font-size: 12px;
+  line-height: 1.6;
+  max-width: 320px;
 }
 .tut-slide-bottom {
   width: 100%;
