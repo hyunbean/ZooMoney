@@ -4,13 +4,13 @@
 
 > 2026-1 캡스톤 프로젝트 · 기획부터 UI, 프론트엔드 구현, Dify AI 에이전트 설계까지 **1인 개발**. Claude Code와의 바이브 코딩으로 제작했습니다.
 
-<!-- 스크린샷 추가 예정: 아래 표에 온보딩 / 홈 / 목표 / 커뮤니티 / AI 트레이너 챗봇 화면 캡처를 넣어주세요.
 <p align="center">
-  <img src="docs/screenshot-home.png" width="220" alt="홈 화면" />
-  <img src="docs/screenshot-piggy.png" width="220" alt="목표 화면" />
-  <img src="docs/screenshot-chat.png" width="220" alt="AI 트레이너 챗봇" />
+  <img src="docs/screenshot-home.png" width="200" alt="홈 화면" />
+  <img src="docs/screenshot-piggy.png" width="200" alt="돼지저금통 화면" />
+  <img src="docs/screenshot-social.png" width="200" alt="커뮤니티 피드" />
+  <img src="docs/screenshot-mypage.png" width="200" alt="마이페이지 배지" />
+  <img src="docs/screenshot-chat.png" width="200" alt="AI 트레이너 챗봇" />
 </p>
--->
 
 **🔗 라이브 데모**: https://hyunbean.github.io/ZooMoney/
 > 데모는 게임/저축 로직을 전부 체험할 수 있지만, API 키는 보안상 배포에 포함하지 않아 **AI 기능(가격 검색, 트레이너 챗봇, 예산 분석, ETF 추천)은 응답하지 않습니다.** 로컬에서 직접 키를 설정하면 전체 기능을 사용할 수 있어요 ([아래 참고](#dify-ai-기능-연동하기)).
@@ -35,12 +35,18 @@
 |---|---|
 | 프론트엔드 | Vanilla JS (프레임워크 없음), CSS Custom Properties |
 | 상태 관리 | 자체 pub/sub 상태 관리자 (`js/state.js`) + `localStorage` 영속화 |
-| AI | [Dify](https://dify.ai) 워크플로 5종 (GPT-4o-mini 기반, Tavily 웹검색·RAG 지식베이스 연동) |
+| AI | [Dify](https://dify.ai) 워크플로 6종 (GPT-4o-mini 기반, Tavily 웹검색·RAG 지식베이스 연동) |
 | 테스트 | Node.js 내장 테스트 러너 (`node --test`) |
 
 바닐라 JS로 프레임워크 없이 만든 이유는 빠른 프로토타이핑과, AI 에이전트와의 상태 흐름을 직접 손으로 설계해보기 위해서입니다.
 
 ### Dify 에이전트 아키텍처
+
+6개 워크플로 전부 Dify(Chatflow 기반)로 설계했고, GPT-4o-mini + Tavily 웹검색 + Cohere RAG 지식베이스를 조합해 구성했습니다.
+
+<p align="center">
+  <img src="docs/screenshot-dify-agents.png" width="720" alt="Dify 에이전트 6종 개요" />
+</p>
 
 | 에이전트 | 연결 파일 | 역할 |
 |---|---|---|
@@ -48,6 +54,7 @@
 | 소비분석 | `js/screens/onboarding.js` | 카드 내역 → 카테고리 분류 + 이상 지출 탐지 |
 | 예산플래닝 | `js/screens/budget.js` | 카테고리별 예산 추천 + 저축 부족분 자동 조정 |
 | 트레이너 챗봇 | `js/screens/trainer_chat.js` | 인텐트 분류 + 지식베이스 연동 대화 |
+| 소비요약 | `js/modals.js`, `js/screens/mypage.js` | 하루 정산 코멘트 + 월간 소비 리포트 |
 | ETF 코치 | `js/modals.js` | 초과 저축액 기반 ETF 추천 (RAG) |
 
 ---
