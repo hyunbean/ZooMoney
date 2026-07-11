@@ -34,7 +34,10 @@ async function callDifyAPI(message, conversationId, apiKey = DIFY_API_KEY) {
   }
 }
 
-/* ── 현대카드 소비 데이터 (hyundaicard_20260518.csv) ── */
+/* ── 현대카드 소비 데이터 (hyundaicard_20260518.csv) ──
+   ⚠️ MVP 범위 고지: 실제 카드사/은행 API 연동 없이, "카드 업로드 → AI 분석"
+   경험을 재현하기 위한 목업 데이터입니다. 카드사 선택 UI도 실제 파일을
+   읽지 않고 항상 이 배열을 사용합니다. */
 const CARD_EXPENSES = [
   /* ── 5월 ── */
   { date: '05-26', merchant: '스타벅스',                  amount: 6500  },
@@ -1023,6 +1026,13 @@ ${expList}`;
     }
 
     function finishAnalysis(result) {
+      // ⚠️ MVP 범위 고지: Dify 소비분석 에이전트가 반환한 구조화된 결과
+      // (monthlySuggestedBudget/outliers/questions)는 대화 UX(챗 말풍선)
+      // 표시에만 쓰이고 analysisData에 저장될 뿐 이후 로직에서 참조되지
+      // 않습니다. 실제 카테고리별 집계·예산 계산은 아래처럼 로컬
+      // _computeCardCategoryTotals()가 별도로 수행합니다 — 실제 카드/은행
+      // 연동이 없는 프로토타입이라 AI 분석 결과를 반영할 실데이터 파이프라인
+      // 자체가 없기 때문입니다.
       analysisData = result;
       monthlyExpenses = CARD_EXPENSES.reduce((s, e) => s + e.amount, 0);
       AppState.saveCardCategoryTotals(_computeCardCategoryTotals());
