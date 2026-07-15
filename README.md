@@ -50,14 +50,14 @@
 
 | 에이전트 | 연결 파일 | 역할 | Dify DSL |
 |---|---|---|---|
-| 목표설정 | `js/screens/onboarding.js` | 상품 실시간 가격 검색 (Tavily) | [목표설정.yml](dify/목표설정.yml) |
-| 소비분석 | `js/screens/onboarding.js` | 카드 내역 → 카테고리 분류 + 이상 지출 탐지 | [소비분석.yml](dify/소비분석.yml) |
-| 예산플래닝 | `js/screens/budget.js` | 카테고리별 예산 추천 + 저축 부족분 자동 조정 | [예산분석.yml](dify/예산분석.yml) |
-| 트레이너 챗봇 | `js/screens/trainer_chat.js` | 인텐트 분류 + 지식베이스 연동 대화 | [트레이너챗봇.yml](dify/트레이너챗봇.yml) |
-| 소비요약 | `js/modals.js`, `js/screens/mypage.js` | 하루 정산 코멘트 + 월간 소비 리포트 | [소비요약.yml](dify/소비요약.yml) |
-| ETF 코치 | `js/modals.js` | 초과 저축액 기반 ETF 추천 (RAG) | [ETF_chatbot.yml](dify/ETF_chatbot.yml) |
+| 목표설정 | `js/screens/onboarding.js` | 상품 실시간 가격 검색 (Tavily) | [goal-setting.yml](dify/goal-setting.yml) |
+| 소비분석 | `js/screens/onboarding.js` | 카드 내역 → 카테고리 분류 + 이상 지출 탐지 | [spending-analysis.yml](dify/spending-analysis.yml) |
+| 예산플래닝 | `js/screens/budget.js` | 카테고리별 예산 추천 + 저축 부족분 자동 조정 | [budget-planning.yml](dify/budget-planning.yml) |
+| 트레이너 챗봇 | `js/screens/trainer_chat.js` | 인텐트 분류 + 지식베이스 연동 대화 | [trainer-chat.yml](dify/trainer-chat.yml) |
+| 소비요약 | `js/modals.js`, `js/screens/mypage.js` | 하루 정산 코멘트 + 월간 소비 리포트 | [spending-summary.yml](dify/spending-summary.yml) |
+| ETF 코치 | `js/modals.js` | 초과 저축액 기반 ETF 추천 (RAG) | [etf-coach.yml](dify/etf-coach.yml) |
 
-`dify/` 폴더의 DSL은 Dify 콘솔에서 그대로 임포트해 워크플로 구조·프롬프트·모델 설정을 확인할 수 있습니다. 단, RAG 노드의 `dataset_ids`는 원 워크스페이스의 지식베이스에 묶여 있어 임포트 후 본인 지식베이스로 재연결이 필요합니다.
+`dify/` 폴더의 DSL은 Dify 콘솔에서 그대로 임포트해 워크플로 구조·프롬프트·모델 설정을 확인할 수 있습니다. 단, RAG 노드의 `dataset_ids`는 원 워크스페이스에 묶인 값이라 export에서 비워뒀습니다 — 임포트 후 본인 지식베이스(절약팁·ETF 문서)를 만들어 소비분석·예산플래닝·트레이너챗봇·ETF코치의 Knowledge Retrieval 노드에 연결해야 RAG가 동작합니다.
 
 ---
 
@@ -84,10 +84,10 @@ cp js/config.example.js js/config.js
 ### 테스트
 
 ```bash
-node --test tests/
+node --test "tests/*.test.mjs"
 ```
 
-상태 관리 로직(예산 계산, 하루 정산, 뱃지 획득 조건 등)에 대한 유닛테스트가 포함되어 있습니다.
+상태 관리 로직(예산 계산, 하루 정산, 뱃지 획득 조건 등)에 대한 유닛테스트 16개가 포함되어 있습니다. 전역 `<script>` 구조라 `node:vm`의 `runInContext`로 `AppState`를 꺼내 검증합니다 (`tests/setup.mjs`).
 
 ---
 
@@ -115,3 +115,7 @@ node --test tests/
 ## 만든 사람
 
 기획과 디자인은 팀원과 함께 작업했고, 프론트엔드 구현과 Dify AI 에이전트 설계는 혼자 맡았습니다.
+
+## License
+
+[MIT](LICENSE)

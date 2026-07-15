@@ -272,8 +272,7 @@ workflow:
       type: custom
       width: 243
     - data:
-        dataset_ids:
-        - uAhISJVmYPM2eUdZfFpYPGSSlnNsco9k6GWH5HCa3vaZRMPJo3aUuHZOs65qKk4P
+        dataset_ids: []
         multiple_retrieval_config:
           reranking_enable: true
           reranking_mode: reranking_model
