@@ -4,29 +4,42 @@
    =========================================== */
 'use strict';
 
-/* ── Dify API 설정 (키는 js/config.js) ── */
+/* ── Dify API 설정 (키는 js/config.js, 라이브 데모는 js/config.public.js의 게이트웨이 모드) ── */
 const DIFY_BASE_URL         = 'https://api.dify.ai/v1';
 
 async function callDifyAPI(message, conversationId, apiKey = DIFY_API_KEY) {
+  // 게이트웨이 모드: 값이 'app-…' 실키가 아니라 에이전트 이름이면
+  // Cloudflare Worker(gateway/)로 보낸다 — 키는 서버에만 존재.
+  const gatewayUrl = (typeof DIFY_GATEWAY_URL !== 'undefined') ? DIFY_GATEWAY_URL : null;
+  const useGateway = gatewayUrl && apiKey && !String(apiKey).startsWith('app-');
+  if (!useGateway && (!apiKey || !String(apiKey).startsWith('app-'))) {
+    throw new Error('Dify 키/게이트웨이 미설정');
+  }
   // 응답이 안 오면 버튼이 영구 잠기지 않도록 30초 타임아웃
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 30000);
   try {
-    const res = await fetch(`${DIFY_BASE_URL}/chat-messages`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        inputs: {},
-        query: message,
-        response_mode: 'blocking',
-        ...(conversationId ? { conversation_id: conversationId } : {}),
-        user: 'piggyquest-user',
-      }),
-      signal: controller.signal,
-    });
+    const res = await fetch(
+      useGateway ? `${gatewayUrl}/chat` : `${DIFY_BASE_URL}/chat-messages`,
+      {
+        method: 'POST',
+        headers: {
+          ...(useGateway ? {} : { 'Authorization': `Bearer ${apiKey}` }),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(useGateway ? {
+          agent: apiKey,
+          query: message,
+          ...(conversationId ? { conversation_id: conversationId } : {}),
+        } : {
+          inputs: {},
+          query: message,
+          response_mode: 'blocking',
+          ...(conversationId ? { conversation_id: conversationId } : {}),
+          user: 'piggyquest-user',
+        }),
+        signal: controller.signal,
+      });
     if (!res.ok) throw new Error(`Dify API ${res.status}`);
     return await res.json();
   } finally {

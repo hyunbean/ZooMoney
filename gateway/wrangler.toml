@@ -1,0 +1,24 @@
+name = "zoomoney-gateway"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+# 배포 절차 (1회):
+#   1. https://dash.cloudflare.com 가입 후  npx wrangler login
+#   2. KV 네임스페이스 생성:  npx wrangler kv namespace create RATE_KV
+#      → 출력된 id를 아래 [[kv_namespaces]] id에 붙여넣기
+#   3. Dify 키 6개를 secret으로 등록 (콘솔에 값이 남지 않음):
+#        npx wrangler secret put DIFY_GOAL_KEY
+#        npx wrangler secret put DIFY_ANALYSIS_KEY
+#        npx wrangler secret put DIFY_BUDGET_KEY
+#        npx wrangler secret put DIFY_TRAINER_KEY
+#        npx wrangler secret put DIFY_SUMMARY_KEY
+#        npx wrangler secret put DIFY_ETF_KEY
+#   4. npx wrangler deploy
+#   5. 발급된 https://zoomoney-gateway.<서브도메인>.workers.dev 를
+#      js/config.public.js 의 DIFY_GATEWAY_URL에 넣고 커밋
+#
+# 로컬 테스트:  npx wrangler dev  (KV 없이도 동작 — rate limit만 비활성)
+
+# [[kv_namespaces]]
+# binding = "RATE_KV"
+# id = "<wrangler kv namespace create RATE_KV 출력값>"

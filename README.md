@@ -13,7 +13,7 @@
 </p>
 
 **🔗 라이브 데모**: https://hyunbean.github.io/ZooMoney/
-> 데모는 저축 로직을 전부 체험할 수 있지만, API 키는 보안상 배포에 포함하지 않아 **AI 기능(가격 검색, 트레이너 챗봇, 예산 분석, ETF 추천)은 응답하지 않습니다.** 로컬에서 직접 키를 설정하면 전체 기능을 사용할 수 있어요 ([아래 참고](#dify-ai-기능-연동하기)).
+> API 키는 보안상 배포에 포함하지 않습니다. 라이브 데모의 AI 기능은 **Cloudflare Worker 게이트웨이**(`gateway/`)를 통해 동작하도록 설계되어 있습니다 — 키는 Worker secret에만 존재하고, 프론트는 에이전트 이름만 보냅니다. 게이트웨이가 배포되지 않은 동안에는 AI 기능만 조용히 비활성화되고 저축·캐릭터 로직은 전부 체험할 수 있습니다. 로컬에서 직접 키를 설정하는 방법은 [아래 참고](#dify-ai-기능-연동하기).
 
 ---
 
@@ -37,6 +37,7 @@
 | 상태 관리 | 자체 pub/sub 상태 관리자 (`js/state.js`) + `localStorage` 영속화 |
 | AI | [Dify](https://dify.ai) 워크플로 6종 (GPT-4o-mini 기반, Tavily 웹검색·RAG 지식베이스 연동) |
 | 테스트 | Node.js 내장 테스트 러너 (`node --test`) |
+| AI 게이트웨이 | Cloudflare Worker (`gateway/`) — 키 은닉 · IP별 호출 한도 · 토큰/비용 로깅 |
 
 바닐라 JS로 프레임워크 없이 만든 이유는 빠른 프로토타이핑과, AI 에이전트와의 상태 흐름을 직접 손으로 설계해보기 위해서입니다.
 
@@ -81,6 +82,23 @@ cp js/config.example.js js/config.js
 
 그리고 [Dify](https://dify.ai)에서 워크플로 앱을 만든 뒤 발급받은 API 키를 `js/config.js`에 채워 넣으세요. 키가 없어도 앱 자체는 정상 실행되며, AI 관련 화면(온보딩 가격검색, 트레이너 챗봇 등)만 응답하지 않습니다.
 
+### AI 게이트웨이 (배포용, `gateway/`)
+
+라이브 데모처럼 키를 배포에 포함할 수 없는 환경에서는 Cloudflare Worker 게이트웨이를 사용합니다.
+
+```
+프론트(에이전트 이름만 전송) → Worker(/chat) → Dify API (키는 Worker secret)
+```
+
+- **키 은닉** — Dify 키 6종은 `wrangler secret`으로만 등록, 코드·배포 산출물에 미포함
+- **남용 방지** — IP당 하루 40회 한도 (Workers KV 카운터, 초과 시 429)
+- **관측성** — 요청별 에이전트·지연시간·토큰 사용량·비용을 구조화 로그로 기록 (`wrangler tail`)
+- **폴백** — 게이트웨이 미배포/실패 시 AI 카드만 비활성화, 앱 로직은 정상 동작
+
+배포 절차는 [`gateway/wrangler.toml`](gateway/wrangler.toml) 주석에 정리되어 있고, 배포 후 발급된
+Worker URL을 [`js/config.public.js`](js/config.public.js)의 `DIFY_GATEWAY_URL`에 넣으면
+라이브 데모에서도 AI 기능이 활성화됩니다.
+
 ### 테스트
 
 ```bash
@@ -100,12 +118,14 @@ node --test "tests/*.test.mjs"
 │   ├── app.js              # 엔트리: 부팅 · 라우팅 · 이벤트 연결
 │   ├── state.js            # 전역 상태 관리 (pub/sub + localStorage)
 │   ├── characters.js       # 8종 캐릭터 스프라이트 시스템
-│   ├── config.example.js   # Dify API 키 설정 템플릿
+│   ├── config.example.js   # Dify API 키 설정 템플릿 (로컬용)
+│   ├── config.public.js    # 게이트웨이 모드 공개 기본값 (라이브 데모용)
 │   ├── data/mock.js        # 커뮤니티 피드/그룹/랭킹 목업 데이터
 │   └── screens/            # 화면별 렌더링 (온보딩, 홈, 목표, 저금통,
 │                            #   마이페이지, 커뮤니티, 트레이너챗봇, 예산, ETF, 상점)
 ├── tests/                  # node --test 유닛테스트
 ├── images/, fonts/         # 캐릭터 스프라이트, 픽셀 폰트(DungGeunMo)
+├── gateway/                # Cloudflare Worker AI 게이트웨이 (키 은닉·한도·로깅)
 ├── dify/                   # Dify 에이전트 6종 DSL(yml) 원본
 └── FEATURES.md             # 기능 상세 문서
 ```
