@@ -19,6 +19,6 @@ compatibility_date = "2026-07-01"
 #
 # 로컬 테스트:  npx wrangler dev  (KV 없이도 동작 — rate limit만 비활성)
 
-# [[kv_namespaces]]
-# binding = "RATE_KV"
-# id = "<wrangler kv namespace create RATE_KV 출력값>"
+[[kv_namespaces]]
+binding = "RATE_KV"
+id = "156a01ac09594b759b1c83caeca862f7"

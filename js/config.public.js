@@ -9,8 +9,7 @@
      (게이트웨이 배포 후 URL을 채우면 라이브 데모에서 AI 활성화).
    =========================================== */
 if (typeof DIFY_API_KEY === 'undefined') {
-  // 게이트웨이 배포 후 https://zoomoney-gateway.<서브도메인>.workers.dev 로 교체
-  window.DIFY_GATEWAY_URL     = null;
+  window.DIFY_GATEWAY_URL     = 'https://zoomoney-gateway.guszhd95.workers.dev';
 
   window.DIFY_API_KEY          = 'goal';     // 목표 설정
   window.DIFY_ANALYSIS_API_KEY = 'analysis'; // 소비 분석
