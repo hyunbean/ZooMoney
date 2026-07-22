@@ -1,0 +1,20 @@
+{"id":"S01","query":"돈 아끼는 방법 알려줘","expect":"handled","note":"class-1 절약팁"}
+{"id":"S02","query":"전기세 줄이는 팁 있어?","expect":"handled","note":"class-1 절약팁"}
+{"id":"S03","query":"충동구매를 어떻게 참지?","expect":"handled","note":"class-2 충동구매"}
+{"id":"S04","query":"자꾸 쇼핑하고 싶은 유혹을 못 참겠어","expect":"handled","note":"class-2 충동구매"}
+{"id":"S05","query":"알뜰폰 요금제 추천해줘","expect":"handled","note":"class-3 추천"}
+{"id":"S06","query":"K패스 쓰는 게 좋아?","expect":"handled","note":"class-3 추천"}
+{"id":"S07","query":"저축 목표 금액을 바꾸고 싶어","expect":"handled","note":"class-4 목표변경"}
+{"id":"S08","query":"목표 기간을 3개월 더 늘리고 싶어","expect":"handled","note":"class-4 목표변경"}
+{"id":"S09","query":"이번 달에 배달음식에 얼마 썼는지 알려줘","expect":"handled","note":"class-5 예산분석"}
+{"id":"S10","query":"카테고리별로 내 지출 분석해줘","expect":"handled","note":"class-5 예산분석"}
+{"id":"S11","query":"오늘 서울 날씨 어때?","expect":"rejected","note":"class-6 무관"}
+{"id":"S12","query":"손흥민 어제 골 넣었어?","expect":"rejected","note":"class-6 무관"}
+{"id":"S13","query":"파이썬으로 웹크롤러 짜는 법 알려줘","expect":"rejected","note":"class-6 무관"}
+{"id":"S14","query":"커피는 하루에 몇 잔이 적당해?","expect":"rejected","note":"class-6 무관"}
+{"id":"S15","query":"용돈 받으면 얼마를 저축해야 적당할까?","expect":"handled","note":"class-1 절약/저축"}
+{"id":"S16","query":"배달 자꾸 시켜먹는 습관 고치고 싶어","expect":"handled","note":"class-2 충동/소비자제"}
+{"id":"S17","query":"가계부 앱 뭐 쓰는 게 좋아?","expect":"handled","note":"class-3 앱추천"}
+{"id":"S18","query":"내 예산 계획 다시 짜줘","expect":"handled","note":"class-5 예산"}
+{"id":"S19","query":"넷플릭스 볼만한 영화 추천해줘","expect":"rejected","note":"class-6 무관(추천이지만 금융무관)"}
+{"id":"S20","query":"여자친구 선물 뭐가 좋을까?","expect":"rejected","note":"class-6 무관"}
