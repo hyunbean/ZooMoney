@@ -1,5 +1,5 @@
 app:
-  description: '일일 정산 피드백과 월간 소비 리포트를 200자 이내로 요약해주는 경량 피드백 챗봇.'
+  description: ''
   icon: 🤖
   icon_background: '#FFEAD5'
   icon_type: emoji
@@ -10,7 +10,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/openai:0.4.3@84d4aae2c55724f6cdaecfadceed061d7e6b6693ae8945ea2dcd155f280743ef
+    marketplace_plugin_unique_identifier: langgenius/openai:1.0.1@b513bf843af4619450bdc15f32e995f90ebdeee143b1cccef442a867099b3397
     version: null
 kind: app
 version: 0.6.0
@@ -125,7 +125,7 @@ workflow:
         prompt_template:
         - id: 3723bbbe-bd40-4cd2-b1cf-e9fad0d1be83
           role: system
-          text: '너는 ZooMoney 앱의 소비 요약 AI야.
+          text: '너는 PiggyQuest 앱의 소비 요약 AI야.
 
             사용자의 지출 데이터를 분석해서 핵심만 짧게 알려줘.
 
@@ -188,7 +188,7 @@ workflow:
       type: custom
       width: 242
     viewport:
-      x: 13.157257439758268
-      y: -87.29328966849567
+      x: 309.1572574397582
+      y: 120.70671033150438
       zoom: 0.751689942986605
   rag_pipeline_variables: []

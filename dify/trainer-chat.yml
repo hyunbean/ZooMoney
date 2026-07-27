@@ -1,6 +1,5 @@
 app:
-  description: 'ZooMoney 절약 코치. 질문을 6개 유형으로 분류해 지식베이스(RAG) 기반으로 절약 팁·충동구매 상담·서비스
-    추천·목표 변경을 처리하는 메인 챗봇.'
+  description: ''
   icon: 🤖
   icon_background: '#FFEAD5'
   icon_type: emoji
@@ -16,7 +15,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/openai:0.4.3@84d4aae2c55724f6cdaecfadceed061d7e6b6693ae8945ea2dcd155f280743ef
+    marketplace_plugin_unique_identifier: langgenius/openai:1.0.1@b513bf843af4619450bdc15f32e995f90ebdeee143b1cccef442a867099b3397
     version: null
 kind: app
 version: 0.6.0
@@ -238,7 +237,7 @@ workflow:
         title: 시작
         type: start
         variables: []
-      height: 72
+      height: 73
       id: '1779199652146'
       position:
         x: 80
@@ -256,7 +255,7 @@ workflow:
         - id: class-1
           name: 절약 방법, 저축 팁, 돈 아끼는 법이 궁금한 경우
         - id: class-2
-          name: 충동구매, 소비 자제, 쇼핑 유혹을 참는 방법
+          name: 충동구매, 소비 자제, 쇼핑 유혹, 참다, 못 참겠다, 자제력, 절제, 유혹을 이겨내고 싶은 고민 등 소비를 억제하려는 모든 상담
         - id: class-3
           name: 절약 앱, 카드, K패스, 알뜰폰, 배달앱 추천이 필요한 경우
         - id: class-4
@@ -265,7 +264,8 @@ workflow:
           name: 예산 분석, 카테고리별 지출, 얼마 썼는지 계산이 필요한 경우
         - id: class-6
           name: 저축, 절약, 예산, 앱 기능과 관련 없는 모든 질문
-        instruction: ''
+        instruction: 질문이 여러 클래스와 애매하게 걸치거나 판단이 어려우면, class-6(무관)으로 보내지 말고 가장 가까운 절약
+          관련 클래스(1~5)를 우선하라. 정상 질문을 거절하는 오류가 무관한 질문을 처리하는 오류보다 사용자 피해가 훨씬 크다.
         model:
           completion_params:
             temperature: 0
@@ -275,11 +275,11 @@ workflow:
         query_variable_selector:
         - sys
         - query
-        selected: false
+        selected: true
         title: 질문분류기
         topics: []
         type: question-classifier
-      height: 345
+      height: 346
       id: question-classifier
       position:
         x: 380
@@ -287,11 +287,11 @@ workflow:
       positionAbsolute:
         x: 380
         y: 200
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         dataset_ids: []
         metadata_filtering_mode: disabled
@@ -311,7 +311,7 @@ workflow:
         selected: false
         title: 지식 검색 (절약팁)
         type: knowledge-retrieval
-      height: 89
+      height: 90
       id: '17797023199291'
       position:
         x: 700
@@ -323,7 +323,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         context:
           enabled: true
@@ -367,7 +367,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 87
+      height: 88
       id: '17797023199292'
       position:
         x: 1000
@@ -379,14 +379,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         answer: '{{#17797023199292.text#}}'
         selected: false
         title: 답변 절약팁
         type: answer
         variables: []
-      height: 101
+      height: 102
       id: '17797023199290'
       position:
         x: 1300
@@ -398,7 +398,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         dataset_ids: []
         metadata_filtering_mode: disabled
@@ -418,7 +418,7 @@ workflow:
         selected: false
         title: 지식 검색 (충동구매)
         type: knowledge-retrieval
-      height: 89
+      height: 90
       id: '1779701596903'
       position:
         x: 700
@@ -430,7 +430,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         context:
           enabled: true
@@ -476,7 +476,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 87
+      height: 88
       id: '1779701609898'
       position:
         x: 1000
@@ -488,14 +488,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         answer: '{{#1779701609898.text#}}'
         selected: false
         title: 답변 충동구매
         type: answer
         variables: []
-      height: 101
+      height: 102
       id: answer
       position:
         x: 1300
@@ -507,7 +507,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         dataset_ids: []
         multiple_retrieval_config:
@@ -526,7 +526,7 @@ workflow:
         selected: false
         title: 지식 검색 (앱서비스)
         type: knowledge-retrieval
-      height: 89
+      height: 90
       id: '1779701849364'
       position:
         x: 700
@@ -538,7 +538,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         context:
           enabled: true
@@ -584,7 +584,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 87
+      height: 88
       id: '1779701853488'
       position:
         x: 1000
@@ -596,14 +596,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         answer: '{{#1779701853488.text#}}'
         selected: false
         title: 답변 앱서비스
         type: answer
         variables: []
-      height: 101
+      height: 102
       id: '1779701858795'
       position:
         x: 1300
@@ -615,7 +615,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         context:
           enabled: false
@@ -662,7 +662,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 87
+      height: 88
       id: '17797023220922'
       position:
         x: 700
@@ -674,14 +674,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         answer: '{{#17797023220922.text#}}'
         selected: false
         title: 답변 목표변경
         type: answer
         variables: []
-      height: 101
+      height: 102
       id: '17797023220910'
       position:
         x: 1000
@@ -693,7 +693,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         context:
           enabled: false
@@ -734,7 +734,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 87
+      height: 88
       id: '17797023777062'
       position:
         x: 700
@@ -742,18 +742,18 @@ workflow:
       positionAbsolute:
         x: 700
         y: 640
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         answer: '{{#17797023777062.text#}}'
         selected: false
         title: 답변 예산계산
         type: answer
         variables: []
-      height: 101
+      height: 102
       id: '17797023777060'
       position:
         x: 1000
@@ -765,7 +765,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         context:
           enabled: false
@@ -790,7 +790,7 @@ workflow:
         prompt_template:
         - id: f5c1008c-9df9-48d2-8631-96dea0806ed1
           role: system
-          text: '당신은 저축 앱 "ZooMoney"의 트레이너입니다.
+          text: '당신은 저축 앱 "PiggyQuest"의 트레이너입니다.
 
             사용자가 저축, 절약, 예산, 소비 습관, 이 앱의 기능과 관련 없는 질문을 했습니다.
 
@@ -810,7 +810,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 87
+      height: 88
       id: '17797027712721'
       position:
         x: 700
@@ -822,14 +822,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     - data:
         answer: '{{#17797027712721.text#}}'
         selected: false
         title: 답변 기타
         type: answer
         variables: []
-      height: 101
+      height: 102
       id: '17797027712720'
       position:
         x: 1000
@@ -841,7 +841,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 241
+      width: 242
     viewport:
       x: 27.250195260279725
       y: 8.086293987423403

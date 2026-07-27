@@ -12,5 +12,4 @@ const DIFY_ANALYSIS_API_KEY = 'app-xxxxxxxxxxxxxxxxxxxxxxxx'; // 소비 분석
 const DIFY_BUDGET_API_KEY   = 'app-xxxxxxxxxxxxxxxxxxxxxxxx'; // 예산 플래닝
 const DIFY_TRAINER_API_KEY  = 'app-xxxxxxxxxxxxxxxxxxxxxxxx'; // 트레이너 챗봇
 const DIFY_SUMMARY_API_KEY  = 'app-xxxxxxxxxxxxxxxxxxxxxxxx'; // 소비요약 / 정산 코멘트
-const ETF_AGENT_KEY         = 'app-xxxxxxxxxxxxxxxxxxxxxxxx'; // ETF 코치
 const REMOVEBG_API_KEY      = '';                              // remove.bg (선택, 비우면 배경 제거 기능만 비활성화)

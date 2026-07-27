@@ -15,3 +15,7 @@ js/config.js
 node_modules/
 dist/
 build/
+
+# wrangler 로컬 캐시
+.wrangler/
+gateway/.wrangler/

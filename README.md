@@ -22,7 +22,7 @@
 - **AI 온보딩** — 갖고 싶은 상품을 말하면 Dify 에이전트가 실시간 웹 검색(Tavily)으로 가격을 찾아오고, 카드 지출 내역을 업로드하면 자동으로 카테고리 분류·이상치 탐지까지 해서 하루 예산을 설계해줍니다.
 - **캐릭터 육성형 동기부여** — 8종 동물 캐릭터가 저축 진행률에 따라 5단계로 성장하고, 예산을 못 지킨 다음 날엔 표정이 시무룩해집니다. 22종 배지와 연속 출석 스트릭으로 계속 돌아오게 만듭니다.
 - **AI 트레이너 챗봇** — 절약 팁, 충동구매 상담, 목표 변경, 실시간 예산 계산까지 인텐트를 분류해 대응하는 대화형 코치.
-- **AI 예산 분석 & ETF 코치** — 카테고리별 지출을 분석해 절감 가능한 예산을 제안하고, 목표를 초과 달성하면 여윳돈으로 시작할 ETF를 추천합니다.
+- **AI 예산 분석** — 카테고리별 지출을 분석해 절감 가능한 예산을 제안합니다.
 - **소셜** — 친구 추가, 예산 성공률 랭킹, 절약 인증 피드, 공동 목표 그룹.
 
 기능별 자세한 설명은 [FEATURES.md](FEATURES.md)에 정리해뒀습니다.
@@ -56,9 +56,8 @@
 | 예산플래닝 | `js/screens/budget.js` | 카테고리별 예산 추천 + 저축 부족분 자동 조정 | [budget-planning.yml](dify/budget-planning.yml) |
 | 트레이너 챗봇 | `js/screens/trainer_chat.js` | 인텐트 분류 + 지식베이스 연동 대화 | [trainer-chat.yml](dify/trainer-chat.yml) |
 | 소비요약 | `js/modals.js`, `js/screens/mypage.js` | 하루 정산 코멘트 + 월간 소비 리포트 | [spending-summary.yml](dify/spending-summary.yml) |
-| ETF 코치 | `js/modals.js` | 초과 저축액 기반 ETF 추천 (RAG) | [etf-coach.yml](dify/etf-coach.yml) |
 
-`dify/` 폴더의 DSL은 Dify 콘솔에서 그대로 임포트해 워크플로 구조·프롬프트·모델 설정을 확인할 수 있습니다. 단, RAG 노드의 `dataset_ids`는 원 워크스페이스에 묶인 값이라 export에서 비워뒀습니다 — 임포트 후 본인 지식베이스(절약팁·ETF 문서)를 만들어 소비분석·예산플래닝·트레이너챗봇·ETF코치의 Knowledge Retrieval 노드에 연결해야 RAG가 동작합니다.
+`dify/` 폴더의 DSL은 Dify 콘솔에서 그대로 임포트해 워크플로 구조·프롬프트·모델 설정을 확인할 수 있습니다. 단, RAG 노드의 `dataset_ids`는 원 워크스페이스에 묶인 값이라 export에서 비워뒀습니다 — 임포트 후 본인 지식베이스(절약팁 문서)를 만들어 소비분석·예산플래닝·트레이너챗봇의 Knowledge Retrieval 노드에 연결해야 RAG가 동작합니다.
 
 ---
 
@@ -122,7 +121,7 @@ node --test "tests/*.test.mjs"
 │   ├── config.public.js    # 게이트웨이 모드 공개 기본값 (라이브 데모용)
 │   ├── data/mock.js        # 커뮤니티 피드/그룹/랭킹 목업 데이터
 │   └── screens/            # 화면별 렌더링 (온보딩, 홈, 목표, 저금통,
-│                            #   마이페이지, 커뮤니티, 트레이너챗봇, 예산, ETF, 상점)
+│                            #   마이페이지, 커뮤니티, 트레이너챗봇, 예산, 상점)
 ├── tests/                  # node --test 유닛테스트
 ├── images/, fonts/         # 캐릭터 스프라이트, 픽셀 폰트(DungGeunMo)
 ├── gateway/                # Cloudflare Worker AI 게이트웨이 (키 은닉·한도·로깅)

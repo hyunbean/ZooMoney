@@ -1,6 +1,5 @@
 app:
-  description: '거래내역 텍스트를 코드 노드로 카테고리별 집계한 뒤, 이상치 소비를 확인하고 제안 예산(JSON)을 산출하는 소비 분석
-    챗봇.'
+  description: ''
   icon: 🤖
   icon_background: '#FFEAD5'
   icon_type: emoji
@@ -16,7 +15,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/openai:0.4.3@84d4aae2c55724f6cdaecfadceed061d7e6b6693ae8945ea2dcd155f280743ef
+    marketplace_plugin_unique_identifier: langgenius/openai:1.0.1@b513bf843af4619450bdc15f32e995f90ebdeee143b1cccef442a867099b3397
     version: null
 kind: app
 version: 0.6.0
@@ -155,7 +154,7 @@ workflow:
             size: 6
         model:
           completion_params:
-            temperature: 0.7
+            temperature: 0
           mode: chat
           name: gpt-4o-mini
           provider: langgenius/openai/openai
@@ -181,15 +180,13 @@ workflow:
 
             2. 카페/식비 질문: 반드시 "혼자만의 소비인가요?" 형식
 
-            3. 식비·카페 외 카테고리(쇼핑, 교통 등)는 질문 생략
+            3. 쇼핑/교통은 아주 큰 금액이 아니면 질문 생략
 
             4. 모든 질문 끝나면 아래 JSON만 출력 (다른 말 없이):
 
             ```json
 
             {"monthlySuggestedBudget": 숫자, "outliers": [], "questions": []}
-
-            ```
 
 
             [이상치 질문 규칙 — 반드시 준수]
@@ -256,7 +253,7 @@ workflow:
           \ False, 'summary': '', 'top_category': ''}\n\n    cat_names = {'food':'식비','cafe':'카페','transport':'교통','shopping':'쇼핑','entertain':'엔터','etc':'기타'}\n\
           \    total = sum(cats.values())\n    sorted_cats = sorted(cats.items(),\
           \ key=lambda x: x[1], reverse=True)\n    sorted_cats = [(k, v) for k, v\
-          \ in sorted_cats if v > 0]\n    if not sorted_cats:\n        return {'has_data': False, 'summary': '', 'top_category': ''}\n\n    top_cat = cat_names[sorted_cats[0][0]]\n\
+          \ in sorted_cats if v > 0]\n\n    top_cat = cat_names[sorted_cats[0][0]]\n\
           \    summary = ', '.join([f\"{cat_names[k]}: {v:,}원 ({round(v/total*100)}%)\"\
           \ for k, v in sorted_cats])\n\n    return {'has_data': True, 'summary':\
           \ summary, 'top_category': top_cat}"
@@ -311,7 +308,7 @@ workflow:
         selected: false
         title: 지식 검색
         type: knowledge-retrieval
-      height: 90
+      height: 52
       id: '1779704728090'
       position:
         x: 680
@@ -325,7 +322,7 @@ workflow:
       type: custom
       width: 242
     viewport:
-      x: 104.34138149301907
-      y: 55.52641537284006
+      x: 104.34138149301913
+      y: 55.52641537284012
       zoom: 0.6464207821944222
   rag_pipeline_variables: []

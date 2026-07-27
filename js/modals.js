@@ -699,34 +699,6 @@ function showGoalChangeModal() {
   });
 }
 
-/* ---- ETF Investment Modal (권유 팝업) ---- */
-function showETFModal(surplus, onClose) {
-  const content = el('div', { class: 'etf-modal' });
-  content.innerHTML = `
-    <div class="settle-emoji" id="etf-emoji">📈</div>
-    <div class="settle-title">이번 달 목표 저축 달성!</div>
-    <div class="settle-sub">이번 달 저축 목표를 넘었어요 🎉<br>초과 저축분 <strong>${formatKRW(surplus)}</strong>, ETF로 불려볼까요?</div>
-    <div class="settle-divider"></div>
-    <div class="etf-nudge-desc">ETF는 소액으로 시작할 수 있는<br>분산 투자 방법이에요.<br>종목별 장단점과 맞춤 추천을 확인해보세요!</div>
-    <div class="settle-divider"></div>
-    <button class="settle-ok-btn" id="etf-start-btn">📈 ETF 투자 알아보기</button>
-    <button class="etf-later-btn" id="etf-later-btn">나중에 볼게요</button>
-  `;
-  ModalManager.open(content, '', true);
-  setTimeout(() => launchConfetti(40), 100);
-  setTimeout(() => animateBounce(content.querySelector('#etf-emoji')), 50);
-
-  content.querySelector('#etf-start-btn').addEventListener('click', () => {
-    ModalManager.close();
-    onClose?.();
-    AppState.navigate('etf');
-  });
-  content.querySelector('#etf-later-btn').addEventListener('click', () => {
-    ModalManager.close();
-    onClose?.();
-  });
-}
-
 /* ---- Add Friend Modal ---- */
 function showAddFriendModal() {
   const s = AppState.getState();

@@ -1,6 +1,5 @@
 app:
-  description: '목표 상품의 가격을 Tavily 웹 검색으로 파악해 저축 목표(JSON: goalName, targetAmount)를
-    설정하는 온보딩 챗봇.'
+  description: ''
   icon: 🤖
   icon_background: '#FFEAD5'
   icon_type: emoji
@@ -11,12 +10,12 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/openai:0.4.3@84d4aae2c55724f6cdaecfadceed061d7e6b6693ae8945ea2dcd155f280743ef
+    marketplace_plugin_unique_identifier: langgenius/openai:1.0.1@b513bf843af4619450bdc15f32e995f90ebdeee143b1cccef442a867099b3397
     version: null
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/tavily:0.1.10@b43f5dc49fbafc69949ee8231d600b23fb7586d514f4c72e470a86af03d2173d
+    marketplace_plugin_unique_identifier: langgenius/tavily:0.1.11@c0d8a474058bacd5fe1bc8178fbae8c446e947ceee2ab03f182d873c949be0f7
     version: null
 kind: app
 version: 0.6.0
@@ -114,7 +113,7 @@ workflow:
         title: 시작
         type: start
         variables: []
-      height: 74
+      height: 73
       id: '1779168448789'
       position:
         x: 80
@@ -126,7 +125,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     - data:
         is_team_authorization: true
         paramSchemas:
@@ -2035,7 +2034,7 @@ workflow:
             type: constant
             value: general
         type: tool
-      height: 323
+      height: 322
       id: '1779170206970'
       position:
         x: 382
@@ -2047,7 +2046,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     - data:
         context:
           enabled: false
@@ -2079,7 +2078,7 @@ workflow:
             \ 금액이 없는 경우: 일반적인 예산 범위의 중간값 사용\n\n[JSON 출력 형식]\n가격을 파악하면 반드시 아래 형식으로\
             \ 즉시 출력하세요.\nJSON 앞에 한 줄 코멘트를 먼저 쓰고 그 다음 JSON 코드블록을 붙이세요.\n\n```json\n\
             {\n  \"goalName\": \"맥북 프로 14인치\",\n  \"targetAmount\": 2490000,\n  \"\
-            aiComment\": \"좋은 선택이에요! 함께 모아봐요 💪\"\n}\n```\n\n[규칙]\n- 가격 파악 후 절대 되물어보지 말고\
+            aiComment\": \"좋은 선택이에요! 함께 모아봐요 \"\n}\n\n[규칙]\n- 가격 파악 후 절대 되물어보지 말고\
             \ 즉시 JSON 출력\n- 사용자가 직접 금액을 말하면 그 금액으로 바로 JSON 출력\n- targetAmount는 반드시\
             \ 숫자(원 단위)\n- aiComment는 짧고 따뜻하게, 이모지 1개 포함\n- 한국어로만 대화\n\n검색 결과에 구체적인\
             \ 가격 정보가 없거나 불확실하면 targetAmount를 0으로 출력하세요."
@@ -2093,7 +2092,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 89
+      height: 88
       id: '1779170936467'
       position:
         x: 682.1221382043241
@@ -2105,14 +2104,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     - data:
         answer: '{{#1779170936467.text#}}'
         selected: false
         title: 답변
         type: answer
         variables: []
-      height: 103
+      height: 102
       id: '1779170995661'
       position:
         x: 986
@@ -2124,7 +2123,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     viewport:
       x: 1.5712454461194056
       y: 44.19808130452594

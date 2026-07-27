@@ -20,7 +20,6 @@ const AGENT_SECRETS = {
   budget: 'DIFY_BUDGET_KEY',      // 예산 플래닝
   trainer: 'DIFY_TRAINER_KEY',    // 트레이너 챗봇
   summary: 'DIFY_SUMMARY_KEY',    // 소비요약/정산 코멘트
-  etf: 'DIFY_ETF_KEY',            // ETF 코치
 };
 
 const ALLOWED_ORIGINS = [

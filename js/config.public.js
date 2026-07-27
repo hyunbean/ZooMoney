@@ -16,6 +16,5 @@ if (typeof DIFY_API_KEY === 'undefined') {
   window.DIFY_BUDGET_API_KEY   = 'budget';   // 예산 플래닝
   window.DIFY_TRAINER_API_KEY  = 'trainer';  // 트레이너 챗봇
   window.DIFY_SUMMARY_API_KEY  = 'summary';  // 소비요약 / 정산 코멘트
-  window.ETF_AGENT_KEY         = 'etf';      // ETF 코치
   window.REMOVEBG_API_KEY      = '';
 }

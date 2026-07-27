@@ -134,9 +134,6 @@ const App = (() => {
         case 'shop':
           screen = renderShopScreen();
           break;
-        case 'etf':
-          screen = renderETFScreen();
-          break;
         default:
           screen = renderHomeScreen();
       }
@@ -245,7 +242,6 @@ const App = (() => {
 
       // 팝업 큐에 정산 결과 추가 (첫 번째)
       PopupQueue.push((onClose) => showDailySettleModal(data, onClose));
-      _checkETFSuggestion();
     });
 
     // Level up → 큐에 두 번째로 추가
@@ -315,25 +311,6 @@ const App = (() => {
         navigateTo('social');
       }
     });
-  }
-
-  /* ── ETF 투자 유도 체크 (이번 달 저축분 >= 월 저축 목표 시, 월 1회) ── */
-  function _checkETFSuggestion() {
-    const s = AppState.getState();
-    if (!s.goal || !s.goal.monthlyTarget) return;
-
-    const todayYM = (s.todayDate || getTodayStr()).slice(0, 7);
-    if (localStorage.getItem('pq_etfMonth') === todayYM) return;
-
-    const monthlySaved = (s.piggyHistory || [])
-      .filter(h => h.date && h.date.slice(0, 7) === todayYM && h.delta > 0)
-      .reduce((sum, h) => sum + h.delta, 0);
-
-    if (monthlySaved < s.goal.monthlyTarget) return;
-
-    localStorage.setItem('pq_etfMonth', todayYM);
-    const surplus = monthlySaved - s.goal.monthlyTarget;
-    PopupQueue.push((onClose) => showETFModal(surplus, onClose));
   }
 
   /* ── 월간 리포트 체크 ── */

@@ -48,18 +48,6 @@ function renderTodayScreen() {
   body.appendChild(calContainer);
   renderCalendar(calContainer);
 
-  /* ── ETF 투자 상시 박스 (달력 아래 스크롤 영역) ── */
-  const etfBox = el('div', { class: 'piggy-etf-box jgt-etf-box' });
-  etfBox.innerHTML = `
-    <div class="piggy-etf-box-left">
-      <div class="piggy-etf-box-title">📈 ETF 투자</div>
-      <div class="piggy-etf-box-desc">모인 돈을 더 불려보세요.<br>종목별 장단점과 AI 추천을 확인해요!</div>
-    </div>
-    <button class="piggy-etf-box-btn" id="today-etf-btn">알아보기</button>
-  `;
-  etfBox.querySelector('#today-etf-btn').addEventListener('click', () => AppState.navigate('etf'));
-  body.appendChild(etfBox);
-
 
   return screen;
 

@@ -1,6 +1,5 @@
 app:
-  description: '카테고리별 지출과 월 저축 목표를 받아 카테고리별 절감 예산(JSON)을 산출. 코드 노드가 합계를 검증·보정해 목표
-    미달을 방지.'
+  description: ''
   icon: 🤖
   icon_background: '#FFEAD5'
   icon_type: emoji
@@ -16,7 +15,7 @@ dependencies:
 - current_identifier: null
   type: marketplace
   value:
-    marketplace_plugin_unique_identifier: langgenius/openai:0.4.3@84d4aae2c55724f6cdaecfadceed061d7e6b6693ae8945ea2dcd155f280743ef
+    marketplace_plugin_unique_identifier: langgenius/openai:1.0.1@b513bf843af4619450bdc15f32e995f90ebdeee143b1cccef442a867099b3397
     version: null
 kind: app
 version: 0.6.0
@@ -126,7 +125,7 @@ workflow:
         title: 시작
         type: start
         variables: []
-      height: 74
+      height: 73
       id: '1779193137632'
       position:
         x: 80
@@ -134,10 +133,11 @@ workflow:
       positionAbsolute:
         x: 80
         y: 282
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     - data:
         context:
           enabled: true
@@ -157,27 +157,26 @@ workflow:
             size: 10
         model:
           completion_params:
-            temperature: 0.7
+            temperature: 0
           mode: chat
           name: gpt-4o-mini
           provider: langgenius/openai/openai
         prompt_template:
         - id: b1fab643-b52e-4c6f-9732-1071fcbd5801
           role: system
-          text: "아래 절약 지식을 참고해서 각 카테고리의 tip을 구체적으로 작성해줘.\n\n참고 지식:\n{{#context#}}\n\
-            \n당신은 개인 재무 코치입니다. 사용자의 카테고리별 월 평균 지출과 월 저축 목표를 분석하여, 각 카테고리에서 얼마씩 줄여야\
-            \ 하는지 제안합니다.\n\n[계산 규칙]\n- (current - suggested) 전체 합계가 반드시\
-            \ 월 저축 목표 금액 이상이어야 합니다\n- 절감은 유연한 카테고리(식비, 쇼핑, 엔터)에 집중하고, 교통처럼 고정비는 최소한만\
-            \ 줄이세요\n- suggested는 0보다 커야 하며 current를 초과할 수 없습니다\n\n[출력 규칙]\n- 아래 JSON\
-            \ 코드블록만 출력하세요\n- JSON 외 어떤 텍스트도 출력하지 마세요\n- tip은 구체적이고 실천 가능한 한 줄 (20자\
-            \ 이내)\n\n```json\n[\n  {\"id\":\"food\",\"current\":숫자,\"suggested\":숫자,\"\
-            tip\":\"한 줄 팁\"},\n  {\"id\":\"cafe\",\"current\":숫자,\"suggested\":숫자,\"\
-            tip\":\"한 줄 팁\"},\n  {\"id\":\"transport\",\"current\":숫자,\"suggested\"\
-            :숫자,\"tip\":\"한 줄 팁\"},\n  {\"id\":\"shopping\",\"current\":숫자,\"suggested\"\
+          text: "당신은 개인 재무 코치입니다. 사용자의 카테고리별 월 평균 지출과 월 저축 목표를 분석하여, 각 카테고리에서 얼마씩\
+            \ 줄여야 하는지 제안합니다.\n\n[계산 규칙]\n- (current - suggested) 전체 합계가 반드시 월 저축 목표\
+            \ 금액 이상이어야 합니다\n- 절감은 유연한 카테고리(식비, 쇼핑, 엔터)에 집중하고, 교통처럼 고정비는 최소한만 줄이세요\n\
+            - suggested는 0보다 커야 하며 current를 초과할 수 없습니다\n\n[출력 규칙]\n- 아래 JSON 코드블록만\
+            \ 출력하세요\n- JSON 외 어떤 텍스트도 출력하지 마세요\n- tip은 구체적이고 실천 가능한 한 줄 (20자 이내)\n\
+            \n```json\n[\n  {\"id\":\"food\",\"current\":숫자,\"suggested\":숫자,\"tip\"\
+            :\"한 줄 팁\"},\n  {\"id\":\"cafe\",\"current\":숫자,\"suggested\":숫자,\"tip\"\
+            :\"한 줄 팁\"},\n  {\"id\":\"transport\",\"current\":숫자,\"suggested\":숫자,\"\
+            tip\":\"한 줄 팁\"},\n  {\"id\":\"shopping\",\"current\":숫자,\"suggested\"\
             :숫자,\"tip\":\"한 줄 팁\"},\n  {\"id\":\"entertain\",\"current\":숫자,\"suggested\"\
             :숫자,\"tip\":\"한 줄 팁\"},\n  {\"id\":\"etc\",\"current\":숫자,\"suggested\"\
-            :숫자,\"tip\":\"한 줄 팁\"}\n]\n```\n\n출력 전 반드시 확인: sum(current - suggested) >=\
-            \ 월 저축 목표. 미달이면 식비·쇼핑·엔터 순으로 더 삭감하고 다시 계산하세요."
+            :숫자,\"tip\":\"한 줄 팁\"}\n]\n\n출력 전 반드시 확인: sum(current - suggested) >= 월 저축 목표. 미달이면 식비·쇼핑·엔터 순으로 더 삭감하고 다시 계산하세요.\n\
+            아래 절약 지식을 참고해서 각 카테고리의 tip을 구체적으로 작성해줘.\n참고 지식:\n{{#context#}}"
         - id: 848dca9e-a593-4428-b45b-ddee8c026b97
           role: user
           text: '{{#sys.query#}}
@@ -188,7 +187,7 @@ workflow:
         type: llm
         vision:
           enabled: false
-      height: 89
+      height: 88
       id: llm
       position:
         x: 679
@@ -200,14 +199,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     - data:
         answer: '{{#1779193676734.result#}}'
         selected: false
         title: 답변
         type: answer
         variables: []
-      height: 103
+      height: 102
       id: answer
       position:
         x: 1280
@@ -219,13 +218,14 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     - data:
         code: "import json, re\n\ndef main(llm_output: str, monthly_target: str) ->\
           \ dict:\n    m = re.search(r'월 저축 목표.*?(\\d[\\d,]+)', monthly_target)\n\
           \    target = int(m.group(1).replace(',', '')) if m else 0\n\n    jm = re.search(r'```json\\\
           s*([\\s\\S]*?)\\s*```', llm_output)\n    if not jm:\n        return {\"\
           result\": llm_output}\n    budgets = json.loads(jm.group(1))\n\n    gap\
+          \ = target - sum(b['current'] - b['suggested'] for b in budgets)\n    gap\
           \ = target - sum(b['current'] - b['suggested'] for b in budgets)\n\n   \
           \ if gap > 0:\n        # 유연한 카테고리만 대상 (교통 제외)\n        flexible = [b for\
           \ b in budgets if b['id'] != 'transport']\n        total_flex = sum(b['suggested']\
@@ -258,7 +258,7 @@ workflow:
           - query
           value_type: string
           variable: monthly_target
-      height: 53
+      height: 52
       id: '1779193676734'
       position:
         x: 980
@@ -270,7 +270,7 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     - data:
         dataset_ids: []
         multiple_retrieval_config:
@@ -289,7 +289,7 @@ workflow:
         selected: false
         title: 지식 검색
         type: knowledge-retrieval
-      height: 91
+      height: 90
       id: '1779705381410'
       position:
         x: 380
@@ -301,9 +301,9 @@ workflow:
       sourcePosition: right
       targetPosition: left
       type: custom
-      width: 243
+      width: 242
     viewport:
-      x: -40.12979291086231
-      y: 52.7342261531073
-      zoom: 0.5755897451799526
+      x: 18.322837312283923
+      y: 53.53384914098342
+      zoom: 0.5122441468265851
   rag_pipeline_variables: []

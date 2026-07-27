@@ -12,7 +12,6 @@ compatibility_date = "2026-07-01"
 #        npx wrangler secret put DIFY_BUDGET_KEY
 #        npx wrangler secret put DIFY_TRAINER_KEY
 #        npx wrangler secret put DIFY_SUMMARY_KEY
-#        npx wrangler secret put DIFY_ETF_KEY
 #   4. npx wrangler deploy
 #   5. 발급된 https://zoomoney-gateway.<서브도메인>.workers.dev 를
 #      js/config.public.js 의 DIFY_GATEWAY_URL에 넣고 커밋
