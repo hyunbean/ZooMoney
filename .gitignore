@@ -15,6 +15,8 @@ js/config.js
 node_modules/
 dist/
 build/
+__pycache__/
+*.pyc
 
 # wrangler 로컬 캐시
 .wrangler/
