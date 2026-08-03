@@ -47,7 +47,7 @@ Claude Code를 활용해 구현하고, 아키텍처 설계와 검증은 직접 �
 |---|---|
 | 프론트엔드 | Vanilla JS (프레임워크 없음), CSS Custom Properties |
 | 상태 관리 | 자체 pub/sub 상태 관리자 (`js/state.js`) + `localStorage` 영속화 |
-| AI | [Dify](https://dify.ai) 워크플로 6종 (GPT-4o-mini 기반, Tavily 웹검색·RAG 지식베이스 연동) |
+| AI | [Dify](https://dify.ai) 워크플로 5종 (GPT-4o-mini 기반, Tavily 웹검색·RAG 지식베이스 연동) |
 | 테스트 | Node.js 내장 테스트 러너 (`node --test`) |
 | AI 게이트웨이 | Cloudflare Worker (`gateway/`) — 키 은닉 · IP별 호출 한도 · 토큰/비용 로깅 |
 
@@ -55,11 +55,7 @@ Claude Code를 활용해 구현하고, 아키텍처 설계와 검증은 직접 �
 
 ### Dify 에이전트 아키텍처
 
-6개 워크플로 전부 Dify(Chatflow 기반)로 설계했고, GPT-4o-mini + Tavily 웹검색 + Cohere RAG 지식베이스를 조합해 구성했습니다.
-
-<p align="center">
-  <img src="docs/screenshot-dify-agents.png" width="720" alt="Dify 에이전트 6종 개요" />
-</p>
+5개 워크플로 전부 Dify(Chatflow 기반)로 설계했고, GPT-4o-mini + Tavily 웹검색 + Cohere RAG 지식베이스를 조합해 구성했습니다.
 
 | 에이전트 | 연결 파일 | 역할 | Dify DSL |
 |---|---|---|---|
@@ -133,7 +129,7 @@ node --test "tests/*.test.mjs"
 ├── tests/                  # node --test 유닛테스트
 ├── images/, fonts/         # 캐릭터 스프라이트, 픽셀 폰트(DungGeunMo)
 ├── gateway/                # Cloudflare Worker AI 게이트웨이 (키 은닉·한도·로깅)
-├── dify/                   # Dify 에이전트 6종 DSL(yml) 원본
+├── dify/                   # Dify 에이전트 5종 DSL(yml) 원본
 └── FEATURES.md             # 기능 상세 문서
 ```
 
